@@ -242,35 +242,75 @@
     z-index: 3;
   }
 
-  /* PROJECT IMAGE */
-  .proj-img-wrap {
-    width: 100%; height: 200px;
+  /* PROJECT CAROUSEL */
+  .proj-carousel {
+    width: 100%; height: 220px;
     overflow: hidden; margin-bottom: 28px;
     position: relative;
     background: var(--bg3);
     border: 1px solid var(--border);
   }
-  .proj-img {
+  .carousel-track {
+    display: flex; height: 100%;
+    transition: transform 0.5s cubic-bezier(.4,0,.2,1);
+    will-change: transform;
+  }
+  .carousel-slide {
+    min-width: 100%; height: 100%; position: relative; flex-shrink: 0;
+  }
+  .carousel-slide img {
     width: 100%; height: 100%;
     object-fit: cover; object-position: center;
     display: block;
-    transition: transform 0.5s ease;
   }
-  .proj-card:hover .proj-img { transform: scale(1.04); }
-  .proj-img-placeholder {
-    position: absolute; inset: 0;
+  /* Placeholder slide */
+  .carousel-placeholder {
+    width: 100%; height: 100%;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center; gap: 10px;
-    border: 2px dashed rgba(0,229,255,0.15);
+    border: 2px dashed rgba(0,229,255,0.12);
   }
-  .proj-img-placeholder svg { opacity: 0.2; }
-  .proj-img-placeholder span {
+  .carousel-placeholder svg { opacity: 0.18; }
+  .carousel-placeholder span {
     font-family: 'Space Mono', monospace; font-size: 9px;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--muted); opacity: 0.4; text-align: center; line-height: 1.8;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); opacity: 0.35; text-align: center; line-height: 1.8;
   }
-  /* Hide placeholder when real image present */
-  .proj-img-wrap:has(.proj-img) .proj-img-placeholder { display: none; }
+  /* Prev / Next buttons */
+  .carousel-btn {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 32px; height: 32px; z-index: 10;
+    background: rgba(10,10,10,0.75); border: 1px solid var(--border);
+    color: var(--text); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; transition: background 0.2s, border-color 0.2s, opacity 0.2s;
+    opacity: 0; pointer-events: none;
+  }
+  .proj-carousel:hover .carousel-btn { opacity: 1; pointer-events: auto; }
+  .carousel-btn:hover { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+  .carousel-btn.prev { left: 10px; }
+  .carousel-btn.next { right: 10px; }
+  /* Dot indicators */
+  .carousel-dots {
+    position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 6px; z-index: 10;
+  }
+  .carousel-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(255,255,255,0.25); cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    border: none; padding: 0;
+  }
+  .carousel-dot.active {
+    background: var(--accent); transform: scale(1.3);
+  }
+  /* Slide counter badge */
+  .carousel-counter {
+    position: absolute; top: 10px; right: 10px; z-index: 10;
+    font-family: 'Space Mono', monospace; font-size: 9px;
+    letter-spacing: 0.1em; color: var(--text);
+    background: rgba(10,10,10,0.7); padding: 3px 8px;
+  }
 
   /* MARQUEE */
   .marquee-wrap {
@@ -649,7 +689,7 @@
     </p>
     <div class="hero-actions">
       <a href="#experience" class="btn-primary">View Work</a>
-      <a href="mailto:meetzeealishan@gmail.com" class="btn-ghost">Get in Touch</a>
+      <a href="/cdn-cgi/l/email-protection#214c4444555b4444404d485249404f61464c40484d0f424e4c" class="btn-ghost">Get in Touch</a>
     </div>
   </div>
   <div class="hero-right">
@@ -662,13 +702,13 @@
          Recommended: portrait, at least 800px tall
          ===================================================== -->
     <div class="hero-photo-wrap">
-      <img class="hero-photo" src="IMG_0367_used (1).jpg" alt="Zeeshan Ali"
+      <img class="hero-photo" src="" alt="Zeeshan Ali"
            onerror="this.style.display='none'" />
       <div class="hero-photo-placeholder">
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="1">
           <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
         </svg>
-        <span>Add your photo here<br/>src="IMG_0367_used (1).jpg"</span>
+        <span>Add your photo here<br/>src="your-photo.jpg"</span>
       </div>
     </div>
 
@@ -682,8 +722,8 @@
         <span class="hero-stat-label">Internships</span>
       </div>
       <div class="hero-stat">
-        <span class="hero-stat-num">2028</span>
-        <span class="hero-stat-label">Graduation</span>
+        <span class="hero-stat-num">90%+</span>
+        <span class="hero-stat-label">CV Inference Accuracy</span>
       </div>
     </div>
     <div class="hero-scroll-hint">
@@ -741,8 +781,8 @@
     </div>
     <div class="about-info-row reveal reveal-delay-2">
       <span class="about-info-label">Organizations</span>
-      <span class="about-info-value">Institute of Electrical and Electronics Engineering </span>
-      <span class="about-info-sub">MicroMouse Competition Team & First Year Council</span>
+      <span class="about-info-value">IEEE First-Year Council</span>
+      <span class="about-info-sub">MicroMouse Competition Team</span>
     </div>
     <div class="about-info-row reveal reveal-delay-3">
       <span class="about-info-label">Location</span>
@@ -830,16 +870,29 @@
     <div class="proj-card reveal">
       <span class="proj-arrow">↗</span>
 
-      <!-- PROJECT IMAGE — replace src="" with your image path -->
-      <div class="proj-img-wrap">
-        <img class="proj-img" src="" alt="AI E-Waste Sorter" onerror="this.style.display='none'" />
-        <div class="proj-img-placeholder">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="1">
-            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
-            <path d="M21 15l-5-5L5 21"/>
-          </svg>
-          <span>Project photo<br/>src="ewaste-sorter.jpg"</span>
+      <!-- ── CAROUSEL: AI E-Waste Sorter ──────────────────────────
+           Add up to 4 images. Replace src="" values with your filenames.
+           Leave src="" blank to show a placeholder for that slot.
+      ──────────────────────────────────────────────────────────── -->
+      <div class="proj-carousel" data-carousel>
+        <div class="carousel-track">
+          <div class="carousel-slide">
+            <img src="" alt="E-Waste Sorter 1" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>ewaste-1.jpg</span></div>'" />
+          </div>
+          <div class="carousel-slide">
+            <img src="" alt="E-Waste Sorter 2" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>ewaste-2.jpg</span></div>'" />
+          </div>
+          <div class="carousel-slide">
+            <img src="" alt="E-Waste Sorter 3" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>ewaste-3.jpg</span></div>'" />
+          </div>
+          <div class="carousel-slide">
+            <img src="" alt="E-Waste Sorter 4" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>ewaste-4.jpg</span></div>'" />
+          </div>
         </div>
+        <button class="carousel-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="carousel-btn next" aria-label="Next">&#8594;</button>
+        <div class="carousel-dots"></div>
+        <div class="carousel-counter">1 / 4</div>
       </div>
 
       <div class="proj-tag">IEEE · Computer Vision</div>
@@ -861,16 +914,28 @@
     <div class="proj-card reveal reveal-delay-1">
       <span class="proj-arrow">↗</span>
 
-      <!-- PROJECT IMAGE — replace src="" with your image path -->
-      <div class="proj-img-wrap">
-        <img class="proj-img" src="" alt="Autonomous Goalie Robot" onerror="this.style.display='none'" />
-        <div class="proj-img-placeholder">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="1">
-            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
-            <path d="M21 15l-5-5L5 21"/>
-          </svg>
-          <span>Project photo<br/>src="goalie-robot.jpg"</span>
+      <!-- ── CAROUSEL: Autonomous Goalie Robot ────────────────────
+           Add up to 4 images. Replace src="" values with your filenames.
+      ──────────────────────────────────────────────────────────── -->
+      <div class="proj-carousel" data-carousel>
+        <div class="carousel-track">
+          <div class="carousel-slide">
+            <img src="" alt="Goalie Robot 1" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>goalie-1.jpg</span></div>'" />
+          </div>
+          <div class="carousel-slide">
+            <img src="" alt="Goalie Robot 2" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>goalie-2.jpg</span></div>'" />
+          </div>
+          <div class="carousel-slide">
+            <img src="" alt="Goalie Robot 3" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>goalie-3.jpg</span></div>'" />
+          </div>
+          <div class="carousel-slide">
+            <img src="" alt="Goalie Robot 4" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>goalie-4.jpg</span></div>'" />
+          </div>
         </div>
+        <button class="carousel-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="carousel-btn next" aria-label="Next">&#8594;</button>
+        <div class="carousel-dots"></div>
+        <div class="carousel-counter">1 / 4</div>
       </div>
 
       <div class="proj-tag">Robotics · C++</div>
@@ -893,16 +958,28 @@
     <div class="proj-card reveal">
       <span class="proj-arrow">↗</span>
 
-      <!-- PROJECT IMAGE — replace src="" with your image path -->
-      <div class="proj-img-wrap">
-        <img class="proj-img" src="" alt="MicroMouse Competition Bot" onerror="this.style.display='none'" />
-        <div class="proj-img-placeholder">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="1">
-            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
-            <path d="M21 15l-5-5L5 21"/>
-          </svg>
-          <span>Project photo<br/>src="micromouse.jpg"</span>
+      <!-- ── CAROUSEL: MicroMouse Competition Bot ──────────────────
+           Add up to 4 images. Replace src="" values with your filenames.
+      ──────────────────────────────────────────────────────────── -->
+      <div class="proj-carousel" data-carousel>
+        <div class="carousel-track">
+          <div class="carousel-slide">
+            <img src="" alt="MicroMouse 1" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>micromouse-1.jpg</span></div>'" />
+          </div>
+          <div class="carousel-slide">
+            <img src="" alt="MicroMouse 2" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>micromouse-2.jpg</span></div>'" />
+          </div>
+          <div class="carousel-slide">
+            <img src="" alt="MicroMouse 3" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>micromouse-3.jpg</span></div>'" />
+          </div>
+          <div class="carousel-slide">
+            <img src="" alt="MicroMouse 4" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>micromouse-4.jpg</span></div>'" />
+          </div>
         </div>
+        <button class="carousel-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="carousel-btn next" aria-label="Next">&#8594;</button>
+        <div class="carousel-dots"></div>
+        <div class="carousel-counter">1 / 4</div>
       </div>
 
       <div class="proj-tag">IEEE · PCB Design · Ongoing</div>
@@ -923,16 +1000,28 @@
     <div class="proj-card reveal reveal-delay-1">
       <span class="proj-arrow">↗</span>
 
-      <!-- PROJECT IMAGE — replace src="" with your image path -->
-      <div class="proj-img-wrap">
-        <img class="proj-img" src="" alt="Smart Electrical Panel Prototype" onerror="this.style.display='none'" />
-        <div class="proj-img-placeholder">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="1">
-            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
-            <path d="M21 15l-5-5L5 21"/>
-          </svg>
-          <span>Project photo<br/>src="smart-panel.jpg"</span>
+      <!-- ── CAROUSEL: Smart Electrical Panel ─────────────────────
+           Add up to 4 images. Replace src="" values with your filenames.
+      ──────────────────────────────────────────────────────────── -->
+      <div class="proj-carousel" data-carousel>
+        <div class="carousel-track">
+          <div class="carousel-slide">
+            <img src="" alt="Smart Panel 1" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>panel-1.jpg</span></div>'" />
+          </div>
+          <div class="carousel-slide">
+            <img src="" alt="Smart Panel 2" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>panel-2.jpg</span></div>'" />
+          </div>
+          <div class="carousel-slide">
+            <img src="" alt="Smart Panel 3" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>panel-3.jpg</span></div>'" />
+          </div>
+          <div class="carousel-slide">
+            <img src="" alt="Smart Panel 4" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>panel-4.jpg</span></div>'" />
+          </div>
         </div>
+        <button class="carousel-btn prev" aria-label="Previous">&#8592;</button>
+        <button class="carousel-btn next" aria-label="Next">&#8594;</button>
+        <div class="carousel-dots"></div>
+        <div class="carousel-counter">1 / 4</div>
       </div>
 
       <div class="proj-tag">IoT · Industrial AI</div>
@@ -1032,10 +1121,10 @@
       </p>
     </div>
     <div class="contact-right">
-      <a href="mailto:meetzeealishan@gmail.com" class="contact-link reveal">
+      <a href="/cdn-cgi/l/email-protection#e78a8282939d8282868b8e948f8689a7808a868e8bc984888a" class="contact-link reveal">
         <div>
           <div class="contact-link-label">Email</div>
-          <div class="contact-link-val">meetzeealishan@gmail.com</div>
+          <div class="contact-link-val"><span class="__cf_email__" data-cfemail="79141c1c0d031c1c1815100a111817391e14181015571a1614">[email&#160;protected]</span></div>
         </div>
         <span class="contact-link-arrow">↗</span>
       </a>
@@ -1071,7 +1160,7 @@
   <a href="#hero" class="footer-top">↑ Back to Top</a>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Custom cursor
   const cursor = document.getElementById('cursor');
   const cursorRing = document.getElementById('cursorRing');
@@ -1109,6 +1198,68 @@
   const sections = document.querySelectorAll('section[id]');
   window.addEventListener('scroll', () => {
     let current = '';
+     sections.forEach(sec => {
+      if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
+    });
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+    });
+  });
+
+  // ── CAROUSEL LOGIC ────────────────────────────────────────────
+  document.querySelectorAll('[data-carousel]').forEach(carousel => {
+    const track   = carousel.querySelector('.carousel-track');
+    const slides  = carousel.querySelectorAll('.carousel-slide');
+    const prevBtn = carousel.querySelector('.carousel-btn.prev');
+    const nextBtn = carousel.querySelector('.carousel-btn.next');
+    const dotsEl  = carousel.querySelector('.carousel-dots');
+    const counter = carousel.querySelector('.carousel-counter');
+    const total   = slides.length;
+    let current   = 0;
+    let timer     = null;
+
+    // Build dots
+    slides.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', 'Slide ' + (i + 1));
+      dot.addEventListener('click', () => goTo(i));
+      dotsEl.appendChild(dot);
+    });
+
+    function goTo(index) {
+      current = (index + total) % total;
+      track.style.transform = 'translateX(-' + (current * 100) + '%)';
+      dotsEl.querySelectorAll('.carousel-dot').forEach((d, i) =>
+        d.classList.toggle('active', i === current)
+      );
+      counter.textContent = (current + 1) + ' / ' + total;
+      resetTimer();
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      timer = setInterval(() => goTo(current + 1), 3500);
+    }
+
+    prevBtn.addEventListener('click', (e) => { e.stopPropagation(); goTo(current - 1); });
+    nextBtn.addEventListener('click', (e) => { e.stopPropagation(); goTo(current + 1); });
+
+    carousel.addEventListener('mouseenter', () => clearInterval(timer));
+    carousel.addEventListener('mouseleave', () => resetTimer());
+
+    let touchStartX = 0;
+    carousel.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    carousel.addEventListener('touchend', e => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+    });
+
+    resetTimer();
+  });
+</script>
+</body>
+</html>
     sections.forEach(sec => {
       if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
     });
@@ -1117,6 +1268,66 @@
         ? 'var(--accent)' : '';
     });
   });
+
+  // ── CAROUSEL ENGINE ──────────────────────────────────────────────
+  document.querySelectorAll('[data-carousel]').forEach(carousel => {
+    const track    = carousel.querySelector('.carousel-track');
+    const slides   = carousel.querySelectorAll('.carousel-slide');
+    const prevBtn  = carousel.querySelector('.carousel-btn.prev');
+    const nextBtn  = carousel.querySelector('.carousel-btn.next');
+    const dotsWrap = carousel.querySelector('.carousel-dots');
+    const counter  = carousel.querySelector('.carousel-counter');
+    const total    = slides.length;
+    let current    = 0;
+    let autoTimer  = null;
+
+    // Build dots
+    slides.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', 'Slide ' + (i + 1));
+      dot.addEventListener('click', () => goTo(i));
+      dotsWrap.appendChild(dot);
+    });
+
+    function goTo(index) {
+      current = (index + total) % total;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      // Update dots
+      dotsWrap.querySelectorAll('.carousel-dot').forEach((d, i) => {
+        d.classList.toggle('active', i === current);
+      });
+      // Update counter
+      if (counter) counter.textContent = `${current + 1} / ${total}`;
+      // Reset auto-timer on manual interaction
+      resetAuto();
+    }
+
+    function resetAuto() {
+      clearInterval(autoTimer);
+      autoTimer = setInterval(() => goTo(current + 1), 3500);
+    }
+
+    prevBtn.addEventListener('click', e => { e.stopPropagation(); goTo(current - 1); });
+    nextBtn.addEventListener('click', e => { e.stopPropagation(); goTo(current + 1); });
+
+    // Pause auto-rotate on hover
+    carousel.addEventListener('mouseenter', () => clearInterval(autoTimer));
+    carousel.addEventListener('mouseleave', () => resetAuto());
+
+    // Touch / swipe support
+    let touchStartX = 0;
+    carousel.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    carousel.addEventListener('touchend', e => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+    });
+
+    // Kick off auto-rotate
+    resetAuto();
+  });
+  // ─────────────────────────────────────────────────────────────────
+
 </script>
 </body>
 </html>
