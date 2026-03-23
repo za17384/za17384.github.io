@@ -18,688 +18,193 @@
     --text: #f0ede6;
     --muted: #888;
     --border: rgba(255,255,255,0.07);
-    --glow: 0 0 40px rgba(0,229,255,0.15);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: "Outfit", sans-serif; overflow-x: hidden; cursor: none; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Outfit', sans-serif;
-    overflow-x: hidden;
-    cursor: none;
-  }
-
-  /* Custom cursor */
-  .cursor {
-    position: fixed; width: 12px; height: 12px;
-    background: var(--accent); border-radius: 50%;
-    pointer-events: none; z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: transform 0.1s, opacity 0.2s;
-    mix-blend-mode: difference;
-  }
-  .cursor-ring {
-    position: fixed; width: 36px; height: 36px;
-    border: 1px solid var(--accent);
-    border-radius: 50%;
-    pointer-events: none; z-index: 9998;
-    transform: translate(-50%, -50%);
-    transition: all 0.15s ease;
-    opacity: 0.5;
-  }
+  /* CURSOR */
+  .cursor { position: fixed; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: transform 0.1s, opacity 0.2s; mix-blend-mode: difference; }
+  .cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid var(--accent); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: all 0.15s ease; opacity: 0.5; }
 
   /* NAV */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 24px 48px;
-    backdrop-filter: blur(12px);
-    background: rgba(10,10,10,0.6);
-    border-bottom: 1px solid var(--border);
-  }
-  .nav-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px; letter-spacing: 0.12em;
-    color: var(--accent); text-decoration: none;
-  }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 24px 48px; backdrop-filter: blur(12px); background: rgba(10,10,10,0.6); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-family: "Bebas Neue", sans-serif; font-size: 22px; letter-spacing: 0.12em; color: var(--accent); text-decoration: none; }
   .nav-links { display: flex; gap: 36px; list-style: none; }
-  .nav-links a {
-    font-family: 'Space Mono', monospace; font-size: 11px;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--muted); text-decoration: none;
-    transition: color 0.2s;
-  }
+  .nav-links a { font-family: "Space Mono", monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
   .nav-links a:hover { color: var(--accent); }
-  .nav-cta {
-    font-family: 'Space Mono', monospace; font-size: 11px;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--bg); background: var(--accent);
-    padding: 10px 22px; border: none; cursor: pointer;
-    text-decoration: none; transition: opacity 0.2s;
-  }
+  .nav-cta { font-family: "Space Mono", monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--bg); background: var(--accent); padding: 10px 22px; border: none; cursor: pointer; text-decoration: none; transition: opacity 0.2s; }
   .nav-cta:hover { opacity: 0.8; }
 
   /* HERO */
-  #hero {
-    min-height: 100vh;
-    display: grid; grid-template-columns: 1fr 1fr;
-    padding: 0; position: relative; overflow: hidden;
-  }
-  .hero-left {
-    display: flex; flex-direction: column;
-    justify-content: flex-end; padding: 140px 48px 80px;
-    position: relative; z-index: 2;
-  }
-  .hero-tag {
-    font-family: 'Space Mono', monospace; font-size: 11px;
-    letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 24px;
-    display: flex; align-items: center; gap: 12px;
-  }
-  .hero-tag::before {
-    content: ''; width: 30px; height: 1px; background: var(--accent);
-  }
+  #hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; padding: 0; position: relative; overflow: hidden; }
+  .hero-left { display: flex; flex-direction: column; justify-content: flex-end; padding: 140px 48px 80px; position: relative; z-index: 2; }
+  .hero-tag { font-family: "Space Mono", monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+  .hero-tag::before { content: ""; width: 30px; height: 1px; background: var(--accent); }
   .hero-name-block { overflow: hidden; }
-  .hero-fname {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(80px, 11vw, 160px);
-    line-height: 0.9;
-    letter-spacing: 0.02em;
-    color: var(--text);
-    display: block;
-    transform: translateY(100%);
-    animation: slideUp 1s cubic-bezier(.16,1,.3,1) 0.2s forwards;
-  }
-  .hero-lname {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(80px, 11vw, 160px);
-    line-height: 0.9;
-    letter-spacing: 0.02em;
-    color: transparent;
-    -webkit-text-stroke: 1.5px var(--text);
-    display: block;
-    transform: translateY(100%);
-    animation: slideUp 1s cubic-bezier(.16,1,.3,1) 0.35s forwards;
-  }
-  .hero-desc {
-    margin-top: 36px; max-width: 380px;
-    font-size: 15px; line-height: 1.7; color: var(--muted);
-    opacity: 0; animation: fadeIn 1s ease 0.8s forwards;
-  }
-  .hero-actions {
-    margin-top: 48px; display: flex; gap: 16px; align-items: center;
-    opacity: 0; animation: fadeIn 1s ease 1s forwards;
-  }
-  .btn-primary {
-    font-family: 'Space Mono', monospace; font-size: 11px;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--bg); background: var(--accent);
-    padding: 14px 32px; text-decoration: none;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(0,229,255,0.3);
-  }
-  .btn-ghost {
-    font-family: 'Space Mono', monospace; font-size: 11px;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--text); border: 1px solid var(--border);
-    padding: 14px 32px; text-decoration: none;
-    transition: border-color 0.2s, color 0.2s;
-  }
+  .hero-fname { font-family: "Bebas Neue", sans-serif; font-size: clamp(80px,11vw,160px); line-height: 0.9; letter-spacing: 0.02em; color: var(--text); display: block; transform: translateY(100%); animation: slideUp 1s cubic-bezier(.16,1,.3,1) 0.2s forwards; }
+  .hero-lname { font-family: "Bebas Neue", sans-serif; font-size: clamp(80px,11vw,160px); line-height: 0.9; letter-spacing: 0.02em; color: transparent; -webkit-text-stroke: 1.5px var(--text); display: block; transform: translateY(100%); animation: slideUp 1s cubic-bezier(.16,1,.3,1) 0.35s forwards; }
+  .hero-desc { margin-top: 36px; max-width: 380px; font-size: 15px; line-height: 1.7; color: var(--muted); opacity: 0; animation: fadeIn 1s ease 0.8s forwards; }
+  .hero-actions { margin-top: 48px; display: flex; gap: 16px; align-items: center; opacity: 0; animation: fadeIn 1s ease 1s forwards; }
+  .btn-primary { font-family: "Space Mono", monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bg); background: var(--accent); padding: 14px 32px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,229,255,0.3); }
+  .btn-ghost { font-family: "Space Mono", monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text); border: 1px solid var(--border); padding: 14px 32px; text-decoration: none; transition: border-color 0.2s, color 0.2s; }
   .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
-
-  .hero-right {
-    position: relative; overflow: hidden;
-    background: var(--bg2);
-  }
-  .hero-right-inner {
-    position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .hero-grid-bg {
-    position: absolute; inset: 0;
-    background-image:
-      linear-gradient(var(--border) 1px, transparent 1px),
-      linear-gradient(90deg, var(--border) 1px, transparent 1px);
-    background-size: 48px 48px;
-    opacity: 0.5;
-  }
-  .hero-orb {
-    position: absolute;
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(0,229,255,0.12) 0%, transparent 70%);
-    border-radius: 50%;
-    animation: pulse 4s ease-in-out infinite;
-  }
-  .hero-stat-stack {
-    position: absolute; bottom: 48px; left: 48px;
-    display: flex; flex-direction: column; gap: 20px;
-    z-index: 2;
-  }
-  .hero-stat { display: flex; flex-direction: column; }
-  .hero-stat-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 42px; color: var(--accent); line-height: 1;
-  }
-  .hero-stat-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px; letter-spacing: 0.15em;
-    text-transform: uppercase; color: var(--muted);
-  }
-  .hero-scroll-hint {
-    position: absolute; bottom: 48px; right: 48px;
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-    z-index: 2;
-  }
-  .scroll-line {
-    width: 1px; height: 60px; background: var(--accent);
-    animation: scrollPulse 2s ease infinite;
-  }
-  .scroll-text {
-    font-family: 'Space Mono', monospace; font-size: 9px;
-    letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--muted); writing-mode: vertical-rl;
-  }
-
-  /* HERO PHOTO */
-  .hero-photo-wrap {
-    position: absolute; inset: 0;
-    display: flex; align-items: flex-end; justify-content: center;
-    overflow: hidden;
-  }
-  .hero-photo {
-    width: 100%; height: 100%;
-    object-fit: cover; object-position: center top;
-    display: block;
-    mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
-  }
-  /* Placeholder shown when no photo is set */
-  .hero-photo-placeholder {
-    position: absolute; inset: 0;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 14px;
-    border: 2px dashed rgba(0,229,255,0.2);
-    color: var(--muted);
-  }
+  .hero-right { position: relative; overflow: hidden; background: var(--bg2); }
+  .hero-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size: 48px 48px; opacity: 0.5; }
+  .hero-accent-bar { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg,var(--accent),var(--accent2)); z-index: 3; }
+  .hero-photo-wrap { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; overflow: hidden; }
+  .hero-photo { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; mask-image: linear-gradient(to bottom,black 55%,transparent 100%); -webkit-mask-image: linear-gradient(to bottom,black 55%,transparent 100%); }
+  .hero-photo-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; border: 2px dashed rgba(0,229,255,0.2); color: var(--muted); }
   .hero-photo-placeholder svg { opacity: 0.3; }
-  .hero-photo-placeholder span {
-    font-family: 'Space Mono', monospace; font-size: 10px;
-    letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.4;
-    text-align: center; line-height: 1.8;
-  }
-  /* Hide placeholder when real photo is present */
-  .hero-photo-wrap:has(.hero-photo) .hero-photo-placeholder { display: none; }
-  .hero-accent-bar {
-    position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    z-index: 3;
-  }
+  .hero-photo-placeholder span { font-family: "Space Mono", monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.4; text-align: center; line-height: 1.8; }
+  .hero-stat-stack { position: absolute; bottom: 48px; left: 48px; display: flex; flex-direction: column; gap: 20px; z-index: 2; }
+  .hero-stat { display: flex; flex-direction: column; }
+  .hero-stat-num { font-family: "Bebas Neue", sans-serif; font-size: 42px; color: var(--accent); line-height: 1; }
+  .hero-stat-label { font-family: "Space Mono", monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+  .hero-scroll-hint { position: absolute; bottom: 48px; right: 48px; display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 2; }
+  .scroll-line { width: 1px; height: 60px; background: var(--accent); animation: scrollPulse 2s ease infinite; }
+  .scroll-text { font-family: "Space Mono", monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); writing-mode: vertical-rl; }
 
-  /* PROJECT CAROUSEL */
-  .proj-carousel {
-    width: 100%; height: 220px;
-    overflow: hidden; margin-bottom: 28px;
-    position: relative;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-  }
-  .carousel-track {
-    display: flex; height: 100%;
-    transition: transform 0.5s cubic-bezier(.4,0,.2,1);
-    will-change: transform;
-  }
-  .carousel-slide {
-    min-width: 100%; height: 100%; position: relative; flex-shrink: 0;
-  }
-  .carousel-slide img {
-    width: 100%; height: 100%;
-    object-fit: cover; object-position: center;
-    display: block;
-  }
-  /* Placeholder slide */
-  .carousel-placeholder {
-    width: 100%; height: 100%;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 10px;
-    border: 2px dashed rgba(0,229,255,0.12);
-  }
+  /* MARQUEE */
+  .marquee-wrap { background: var(--accent); overflow: hidden; padding: 16px 0; }
+  .marquee-track { display: flex; gap: 48px; white-space: nowrap; animation: marquee 20s linear infinite; width: max-content; }
+  .marquee-item { font-family: "Bebas Neue", sans-serif; font-size: 20px; letter-spacing: 0.1em; color: var(--bg); display: flex; align-items: center; gap: 48px; }
+  .marquee-item::after { content: "\2726"; font-size: 14px; }
+
+  /* ABOUT */
+  #about { display: grid; grid-template-columns: 1fr 1fr; min-height: 80vh; border-top: 1px solid var(--border); }
+  .about-left { padding: 100px 48px; border-right: 1px solid var(--border); display: flex; flex-direction: column; justify-content: center; }
+  .section-tag { font-family: "Space Mono", monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+  .section-heading { font-family: "Bebas Neue", sans-serif; font-size: clamp(52px,6vw,88px); line-height: 0.95; letter-spacing: 0.02em; }
+  .about-body { margin-top: 36px; font-size: 15px; line-height: 1.8; color: var(--muted); max-width: 420px; }
+  .about-body strong { color: var(--text); font-weight: 500; }
+  .about-right { padding: 100px 48px; display: flex; flex-direction: column; justify-content: center; gap: 40px; }
+  .about-info-row { display: flex; flex-direction: column; gap: 6px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+  .about-info-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .about-info-label { font-family: "Space Mono", monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .about-info-value { font-size: 16px; color: var(--text); }
+  .about-info-sub { font-size: 13px; color: var(--muted); }
+
+  /* STATS BAND */
+  .stats-band { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); display: grid; grid-template-columns: repeat(4,1fr); background: var(--bg3); }
+  .stat-cell { padding: 60px 40px; border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; transition: background 0.3s; }
+  .stat-cell:hover { background: var(--bg2); }
+  .stat-cell:last-child { border-right: none; }
+  .stat-big { font-family: "Bebas Neue", sans-serif; font-size: 64px; color: var(--accent); line-height: 1; }
+  .stat-desc { font-size: 13px; color: var(--muted); max-width: 140px; line-height: 1.5; }
+
+  /* EXPERIENCE */
+  #experience { padding: 120px 48px; border-top: 1px solid var(--border); }
+  .exp-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 80px; }
+  .exp-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--border); }
+  .exp-card { background: var(--bg); padding: 48px 40px; position: relative; overflow: hidden; transition: background 0.3s; }
+  .exp-card:hover { background: var(--bg3); }
+  .exp-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
+  .exp-card:hover::before { transform: scaleX(1); }
+  .exp-num { font-family: "Space Mono", monospace; font-size: 10px; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 28px; }
+  .exp-role { font-family: "Bebas Neue", sans-serif; font-size: 28px; letter-spacing: 0.03em; color: var(--text); line-height: 1.2; margin-bottom: 8px; }
+  .exp-company { font-size: 13px; color: var(--accent); margin-bottom: 4px; }
+  .exp-period { font-family: "Space Mono", monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 24px; }
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .exp-bullets li { font-size: 13px; line-height: 1.6; color: var(--muted); padding-left: 16px; position: relative; }
+  .exp-bullets li::before { content: "\2192"; position: absolute; left: 0; color: var(--accent); font-size: 11px; }
+
+  /* PROJECTS */
+  #projects { padding: 120px 48px; border-top: 1px solid var(--border); background: var(--bg2); }
+  .proj-header { margin-bottom: 80px; }
+  .proj-large { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); margin-bottom: 1px; }
+  .proj-card { background: var(--bg2); padding: 56px 48px; position: relative; overflow: hidden; transition: background 0.3s; cursor: pointer; }
+  .proj-card:hover { background: var(--bg3); }
+  .proj-tag { font-family: "Space Mono", monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+  .proj-tag::before { content: ""; width: 20px; height: 1px; background: var(--accent); }
+  .proj-title { font-family: "Bebas Neue", sans-serif; font-size: 36px; letter-spacing: 0.03em; color: var(--text); line-height: 1.1; margin-bottom: 16px; }
+  .proj-desc { font-size: 13px; line-height: 1.7; color: var(--muted); max-width: 380px; margin-bottom: 32px; }
+  .proj-tech { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tech-pill { font-family: "Space Mono", monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(0,229,255,0.3); padding: 5px 12px; }
+  .proj-arrow { position: absolute; top: 40px; right: 40px; font-size: 24px; color: var(--border); transition: color 0.3s, transform 0.3s; }
+  .proj-card:hover .proj-arrow { color: var(--accent); transform: translate(4px,-4px); }
+
+  /* CAROUSEL */
+  .proj-carousel { width: 100%; height: 220px; overflow: hidden; margin-bottom: 28px; position: relative; background: var(--bg3); border: 1px solid var(--border); }
+  .carousel-track { display: flex; height: 100%; transition: transform 0.5s cubic-bezier(.4,0,.2,1); will-change: transform; }
+  .carousel-slide { min-width: 100%; height: 100%; position: relative; flex-shrink: 0; cursor: zoom-in; }
+  .carousel-slide img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+  .carousel-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; border: 2px dashed rgba(0,229,255,0.12); }
   .carousel-placeholder svg { opacity: 0.18; }
-  .carousel-placeholder span {
-    font-family: 'Space Mono', monospace; font-size: 9px;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--muted); opacity: 0.35; text-align: center; line-height: 1.8;
-  }
-  /* Prev / Next buttons */
-  .carousel-btn {
-    position: absolute; top: 50%; transform: translateY(-50%);
-    width: 32px; height: 32px; z-index: 10;
-    background: rgba(10,10,10,0.75); border: 1px solid var(--border);
-    color: var(--text); cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px; transition: background 0.2s, border-color 0.2s, opacity 0.2s;
-    opacity: 0; pointer-events: none;
-  }
+  .carousel-placeholder span { font-family: "Space Mono", monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); opacity: 0.35; text-align: center; line-height: 1.8; }
+  .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 32px; height: 32px; z-index: 10; background: rgba(10,10,10,0.75); border: 1px solid var(--border); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: background 0.2s, border-color 0.2s, opacity 0.2s; opacity: 0; pointer-events: none; }
   .proj-carousel:hover .carousel-btn { opacity: 1; pointer-events: auto; }
   .carousel-btn:hover { background: var(--accent); border-color: var(--accent); color: var(--bg); }
   .carousel-btn.prev { left: 10px; }
   .carousel-btn.next { right: 10px; }
-  /* Dot indicators */
-  .carousel-dots {
-    position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
-    display: flex; gap: 6px; z-index: 10;
-  }
-  .carousel-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: rgba(255,255,255,0.25); cursor: pointer;
-    transition: background 0.2s, transform 0.2s;
-    border: none; padding: 0;
-  }
-  .carousel-dot.active {
-    background: var(--accent); transform: scale(1.3);
-  }
-  /* Slide counter badge */
-  .carousel-counter {
-    position: absolute; top: 10px; right: 10px; z-index: 10;
-    font-family: 'Space Mono', monospace; font-size: 9px;
-    letter-spacing: 0.1em; color: var(--text);
-    background: rgba(10,10,10,0.7); padding: 3px 8px;
-  }
-  /* Expand hint shown on slide hover */
-  .carousel-slide { cursor: zoom-in; }
-  .expand-hint {
-    position: absolute; bottom: 10px; left: 10px; z-index: 10;
-    font-family: 'Space Mono', monospace; font-size: 9px;
-    letter-spacing: 0.1em; color: var(--text);
-    background: rgba(10,10,10,0.7); padding: 3px 8px;
-    display: flex; align-items: center; gap: 5px;
-    opacity: 0; transition: opacity 0.2s;
-    pointer-events: none;
-  }
+  .carousel-dots { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 10; }
+  .carousel-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.25); cursor: pointer; transition: background 0.2s, transform 0.2s; border: none; padding: 0; }
+  .carousel-dot.active { background: var(--accent); transform: scale(1.3); }
+  .carousel-counter { position: absolute; top: 10px; right: 10px; z-index: 10; font-family: "Space Mono", monospace; font-size: 9px; letter-spacing: 0.1em; color: var(--text); background: rgba(10,10,10,0.7); padding: 3px 8px; }
+  .expand-hint { position: absolute; bottom: 10px; left: 10px; z-index: 10; font-family: "Space Mono", monospace; font-size: 9px; letter-spacing: 0.1em; color: var(--text); background: rgba(10,10,10,0.7); padding: 3px 8px; display: flex; align-items: center; gap: 5px; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
   .proj-carousel:hover .expand-hint { opacity: 1; }
 
   /* LIGHTBOX */
-  #lightbox {
-    position: fixed; inset: 0; z-index: 10000;
-    background: rgba(0,0,0,0.92);
-    backdrop-filter: blur(8px);
-    display: flex; align-items: center; justify-content: center;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.3s ease;
-  }
+  #lightbox { position: fixed; inset: 0; z-index: 10000; background: rgba(0,0,0,0.92); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
   #lightbox.open { opacity: 1; pointer-events: all; }
-  .lb-img-wrap {
-    position: relative; max-width: 90vw; max-height: 88vh;
-    display: flex; align-items: center; justify-content: center;
-  }
-  #lb-img {
-    max-width: 90vw; max-height: 85vh;
-    object-fit: contain;
-    border: 1px solid var(--border);
-    box-shadow: 0 0 80px rgba(0,229,255,0.08);
-    transform: scale(0.92);
-    transition: transform 0.35s cubic-bezier(.16,1,.3,1);
-    display: block;
-  }
+  .lb-img-wrap { position: relative; max-width: 90vw; max-height: 88vh; display: flex; align-items: center; justify-content: center; }
+  #lb-img { max-width: 90vw; max-height: 85vh; object-fit: contain; border: 1px solid var(--border); box-shadow: 0 0 80px rgba(0,229,255,0.08); transform: scale(0.92); transition: transform 0.35s cubic-bezier(.16,1,.3,1); display: block; }
   #lightbox.open #lb-img { transform: scale(1); }
-  .lb-close {
-    position: fixed; top: 24px; right: 28px;
-    font-size: 28px; color: var(--muted);
-    background: none; border: none; cursor: pointer;
-    font-family: 'Space Mono', monospace;
-    transition: color 0.2s, transform 0.2s;
-    z-index: 10001; line-height: 1;
-  }
+  .lb-close { position: fixed; top: 24px; right: 28px; font-size: 28px; color: var(--muted); background: none; border: none; cursor: pointer; font-family: "Space Mono", monospace; transition: color 0.2s, transform 0.2s; z-index: 10001; line-height: 1; }
   .lb-close:hover { color: var(--accent); transform: rotate(90deg); }
-  .lb-nav {
-    position: fixed; top: 50%; transform: translateY(-50%);
-    width: 44px; height: 44px;
-    background: rgba(10,10,10,0.8); border: 1px solid var(--border);
-    color: var(--text); font-size: 18px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; transition: background 0.2s, border-color 0.2s;
-    z-index: 10001;
-  }
+  .lb-nav { position: fixed; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; background: rgba(10,10,10,0.8); border: 1px solid var(--border); color: var(--text); font-size: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s, border-color 0.2s; z-index: 10001; }
   .lb-nav:hover { background: var(--accent); border-color: var(--accent); color: var(--bg); }
   .lb-prev { left: 20px; }
   .lb-next { right: 20px; }
-  .lb-counter {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-    font-family: 'Space Mono', monospace; font-size: 10px;
-    letter-spacing: 0.15em; color: var(--muted);
-    background: rgba(10,10,10,0.7); padding: 5px 14px;
-    z-index: 10001;
-  }
-
-  /* MARQUEE */
-  .marquee-wrap {
-    background: var(--accent); overflow: hidden;
-    padding: 16px 0; border-top: 1px solid var(--bg);
-    border-bottom: 1px solid var(--bg);
-  }
-  .marquee-track {
-    display: flex; gap: 48px; white-space: nowrap;
-    animation: marquee 20s linear infinite;
-    width: max-content;
-  }
-  .marquee-item {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 20px; letter-spacing: 0.1em;
-    color: var(--bg); display: flex; align-items: center; gap: 48px;
-  }
-  .marquee-item::after {
-    content: '✦'; font-size: 14px;
-  }
-
-  /* ABOUT */
-  #about {
-    display: grid; grid-template-columns: 1fr 1fr;
-    min-height: 80vh; border-top: 1px solid var(--border);
-  }
-  .about-left {
-    padding: 100px 48px;
-    border-right: 1px solid var(--border);
-    display: flex; flex-direction: column; justify-content: center;
-  }
-  .section-tag {
-    font-family: 'Space Mono', monospace; font-size: 10px;
-    letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 20px;
-  }
-  .section-heading {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(52px, 6vw, 88px);
-    line-height: 0.95; letter-spacing: 0.02em;
-  }
-  .about-body {
-    margin-top: 36px; font-size: 15px; line-height: 1.8;
-    color: var(--muted); max-width: 420px;
-  }
-  .about-body strong { color: var(--text); font-weight: 500; }
-  .about-right {
-    padding: 100px 48px;
-    display: flex; flex-direction: column; justify-content: center; gap: 40px;
-  }
-  .about-info-row {
-    display: flex; flex-direction: column; gap: 6px;
-    padding-bottom: 32px; border-bottom: 1px solid var(--border);
-  }
-  .about-info-row:last-child { border-bottom: none; padding-bottom: 0; }
-  .about-info-label {
-    font-family: 'Space Mono', monospace; font-size: 9px;
-    letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent);
-  }
-  .about-info-value { font-size: 16px; color: var(--text); }
-  .about-info-sub { font-size: 13px; color: var(--muted); }
-
-  /* EXPERIENCE */
-  #experience {
-    padding: 120px 48px;
-    border-top: 1px solid var(--border);
-  }
-  .exp-header {
-    display: flex; align-items: flex-end; justify-content: space-between;
-    margin-bottom: 80px;
-  }
-  .exp-grid {
-    display: grid; grid-template-columns: 1fr 1fr 1fr;
-    gap: 1px; background: var(--border);
-  }
-  .exp-card {
-    background: var(--bg);
-    padding: 48px 40px;
-    position: relative; overflow: hidden;
-    transition: background 0.3s;
-  }
-  .exp-card:hover { background: var(--bg3); }
-  .exp-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0;
-    height: 2px; background: var(--accent);
-    transform: scaleX(0); transform-origin: left;
-    transition: transform 0.4s ease;
-  }
-  .exp-card:hover::before { transform: scaleX(1); }
-  .exp-num {
-    font-family: 'Space Mono', monospace; font-size: 10px;
-    letter-spacing: 0.15em; color: var(--accent); margin-bottom: 28px;
-  }
-  .exp-role {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px; letter-spacing: 0.03em;
-    color: var(--text); line-height: 1.2; margin-bottom: 8px;
-  }
-  .exp-company {
-    font-size: 13px; color: var(--accent); margin-bottom: 4px;
-  }
-  .exp-period {
-    font-family: 'Space Mono', monospace; font-size: 10px;
-    color: var(--muted); letter-spacing: 0.1em; margin-bottom: 24px;
-  }
-  .exp-bullets {
-    list-style: none; display: flex; flex-direction: column; gap: 10px;
-  }
-  .exp-bullets li {
-    font-size: 13px; line-height: 1.6; color: var(--muted);
-    padding-left: 16px; position: relative;
-  }
-  .exp-bullets li::before {
-    content: '→'; position: absolute; left: 0;
-    color: var(--accent); font-size: 11px;
-  }
-
-  /* PROJECTS */
-  #projects {
-    padding: 120px 48px;
-    border-top: 1px solid var(--border);
-    background: var(--bg2);
-  }
-  .proj-header { margin-bottom: 80px; }
-  .proj-large {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 1px; background: var(--border); margin-bottom: 1px;
-  }
-  .proj-card {
-    background: var(--bg2); padding: 56px 48px;
-    position: relative; overflow: hidden;
-    transition: background 0.3s;
-    cursor: pointer;
-  }
-  .proj-card:hover { background: var(--bg3); }
-  .proj-tag {
-    font-family: 'Space Mono', monospace; font-size: 9px;
-    letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 20px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .proj-tag::before {
-    content: ''; width: 20px; height: 1px; background: var(--accent);
-  }
-  .proj-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 40px; letter-spacing: 0.03em;
-    color: var(--text); line-height: 1.1; margin-bottom: 16px;
-  }
-  .proj-desc {
-    font-size: 14px; line-height: 1.7; color: var(--muted);
-    max-width: 380px; margin-bottom: 32px;
-  }
-  .proj-tech {
-    display: flex; flex-wrap: wrap; gap: 8px;
-  }
-  .tech-pill {
-    font-family: 'Space Mono', monospace; font-size: 9px;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--accent); border: 1px solid rgba(0,229,255,0.3);
-    padding: 5px 12px;
-  }
-  .proj-arrow {
-    position: absolute; top: 40px; right: 40px;
-    font-size: 24px; color: var(--border);
-    transition: color 0.3s, transform 0.3s;
-  }
-  .proj-card:hover .proj-arrow { color: var(--accent); transform: translate(4px, -4px); }
+  .lb-counter { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); font-family: "Space Mono", monospace; font-size: 10px; letter-spacing: 0.15em; color: var(--muted); background: rgba(10,10,10,0.7); padding: 5px 14px; z-index: 10001; }
 
   /* SKILLS */
-  #skills {
-    padding: 120px 48px;
-    border-top: 1px solid var(--border);
-  }
-  .skills-layout {
-    display: grid; grid-template-columns: 1fr 2fr;
-    gap: 80px; margin-top: 80px;
-  }
+  #skills { padding: 120px 48px; border-top: 1px solid var(--border); }
+  .skills-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; margin-top: 80px; }
   .skills-intro { font-size: 15px; line-height: 1.8; color: var(--muted); }
   .skills-grid { display: flex; flex-direction: column; gap: 48px; }
-  .skill-category {}
-  .skill-cat-title {
-    font-family: 'Space Mono', monospace; font-size: 10px;
-    letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 20px;
-    padding-bottom: 12px; border-bottom: 1px solid var(--border);
-  }
+  .skill-cat-title { font-family: "Space Mono", monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
   .skill-tags { display: flex; flex-wrap: wrap; gap: 10px; }
-  .skill-tag {
-    font-size: 13px; color: var(--text);
-    background: var(--bg3); border: 1px solid var(--border);
-    padding: 8px 18px;
-    transition: border-color 0.2s, color 0.2s;
-  }
+  .skill-tag { font-size: 13px; color: var(--text); background: var(--bg3); border: 1px solid var(--border); padding: 8px 18px; transition: border-color 0.2s, color 0.2s; }
   .skill-tag:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* STATS BAND */
-  .stats-band {
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    background: var(--bg3);
-  }
-  .stat-cell {
-    padding: 60px 40px;
-    border-right: 1px solid var(--border);
-    display: flex; flex-direction: column; gap: 8px;
-    position: relative; overflow: hidden;
-    transition: background 0.3s;
-  }
-  .stat-cell:hover { background: var(--bg2); }
-  .stat-cell:last-child { border-right: none; }
-  .stat-big {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 64px; color: var(--accent); line-height: 1;
-  }
-  .stat-desc {
-    font-size: 13px; color: var(--muted); max-width: 140px; line-height: 1.5;
-  }
-
   /* CONTACT */
-  #contact {
-    padding: 160px 48px;
-    border-top: 1px solid var(--border);
-    position: relative; overflow: hidden;
-  }
-  .contact-bg-text {
-    position: absolute; bottom: -40px; left: -20px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(100px, 18vw, 280px);
-    color: rgba(255,255,255,0.02);
-    letter-spacing: 0.05em;
-    pointer-events: none; user-select: none; white-space: nowrap;
-  }
-  .contact-layout {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 80px; position: relative; z-index: 2;
-  }
-  .contact-left {}
-  .contact-heading {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(60px, 7vw, 100px);
-    line-height: 0.9; letter-spacing: 0.02em;
-    margin-top: 20px; margin-bottom: 32px;
-  }
+  #contact { padding: 160px 48px; border-top: 1px solid var(--border); position: relative; overflow: hidden; }
+  .contact-bg-text { position: absolute; bottom: -40px; left: -20px; font-family: "Bebas Neue", sans-serif; font-size: clamp(100px,18vw,280px); color: rgba(255,255,255,0.02); letter-spacing: 0.05em; pointer-events: none; user-select: none; white-space: nowrap; }
+  .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; position: relative; z-index: 2; }
+  .contact-heading { font-family: "Bebas Neue", sans-serif; font-size: clamp(60px,7vw,100px); line-height: 0.9; letter-spacing: 0.02em; margin-top: 20px; margin-bottom: 32px; }
   .contact-heading span { color: var(--accent); }
   .contact-sub { font-size: 15px; line-height: 1.8; color: var(--muted); max-width: 380px; }
-  .contact-right {
-    display: flex; flex-direction: column; justify-content: flex-end; gap: 24px;
-  }
-  .contact-link {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 24px 0; border-bottom: 1px solid var(--border);
-    text-decoration: none; color: var(--text);
-    transition: color 0.2s; group: true;
-  }
+  .contact-right { display: flex; flex-direction: column; justify-content: flex-end; gap: 24px; }
+  .contact-link { display: flex; align-items: center; justify-content: space-between; padding: 24px 0; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--text); transition: color 0.2s; }
   .contact-link:hover { color: var(--accent); }
-  .contact-link-label {
-    font-family: 'Space Mono', monospace; font-size: 10px;
-    letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
-    margin-bottom: 4px;
-  }
+  .contact-link-label { font-family: "Space Mono", monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
   .contact-link-val { font-size: 16px; }
   .contact-link-arrow { font-size: 20px; transition: transform 0.2s; }
-  .contact-link:hover .contact-link-arrow { transform: translate(4px, -4px); }
+  .contact-link:hover .contact-link-arrow { transform: translate(4px,-4px); }
 
   /* FOOTER */
-  footer {
-    padding: 32px 48px;
-    border-top: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-    background: var(--bg2);
-  }
-  .footer-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 20px; letter-spacing: 0.12em; color: var(--accent);
-  }
-  .footer-copy {
-    font-family: 'Space Mono', monospace; font-size: 10px;
-    color: var(--muted); letter-spacing: 0.1em;
-  }
-  .footer-top {
-    font-family: 'Space Mono', monospace; font-size: 10px;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--muted); text-decoration: none;
-    transition: color 0.2s;
-  }
+  footer { padding: 32px 48px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--bg2); }
+  .footer-logo { font-family: "Bebas Neue", sans-serif; font-size: 20px; letter-spacing: 0.12em; color: var(--accent); }
+  .footer-copy { font-family: "Space Mono", monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.1em; }
+  .footer-top { font-family: "Space Mono", monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
   .footer-top:hover { color: var(--accent); }
 
   /* ANIMATIONS */
-  @keyframes slideUp {
-    to { transform: translateY(0); }
-  }
-  @keyframes fadeIn {
-    to { opacity: 1; }
-  }
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 0.6; }
-    50% { transform: scale(1.1); opacity: 1; }
-  }
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-  @keyframes scrollPulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  /* Scroll animations */
-  .reveal {
-    opacity: 0; transform: translateY(32px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-  }
-  .reveal.visible {
-    opacity: 1; transform: translateY(0);
-  }
+  @keyframes slideUp { to { transform: translateY(0); } }
+  @keyframes fadeIn { to { opacity: 1; } }
+  @keyframes pulse { 0%,100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.1); opacity: 1; } }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes scrollPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
   .reveal-delay-1 { transition-delay: 0.1s; }
   .reveal-delay-2 { transition-delay: 0.2s; }
   .reveal-delay-3 { transition-delay: 0.3s; }
-  .reveal-delay-4 { transition-delay: 0.4s; }
 
-  /* Responsive */
+  /* RESPONSIVE */
   @media (max-width: 900px) {
     nav { padding: 20px 24px; }
     .nav-links { display: none; }
@@ -721,7 +226,6 @@
 </head>
 <body>
 
-<!-- Cursors -->
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
@@ -735,61 +239,35 @@
     <li><a href="#skills">[ Skills ]</a></li>
     <li><a href="#contact">[ Contact ]</a></li>
   </ul>
-  <a href="https://www.linkedin.com/in/zeeshan-ali-929101261/" target="_blank" class="nav-cta">LinkedIn ↗</a>
+  <a href="https://www.linkedin.com/in/zeeshan-ali-929101261/" target="_blank" class="nav-cta">LinkedIn &#8599;</a>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
   <div class="hero-left">
-    <div class="hero-tag">Computer Engineer · Atlanta, GA</div>
-    <div class="hero-name-block">
-      <span class="hero-fname">ZEESHAN</span>
-    </div>
-    <div class="hero-name-block">
-      <span class="hero-lname">ALI</span>
-    </div>
-    <p class="hero-desc">
-      Building intelligent systems at the intersection of AI, embedded hardware, and software engineering. 
-      Computer Engineering student at UGA with a 3.8 GPA, focused on robotics, computer vision, and automation.
-    </p>
+    <div class="hero-tag">Computer Engineer &middot; Atlanta, GA</div>
+    <div class="hero-name-block"><span class="hero-fname">ZEESHAN</span></div>
+    <div class="hero-name-block"><span class="hero-lname">ALI</span></div>
+    <p class="hero-desc">Building intelligent systems at the intersection of AI, embedded hardware, and software engineering. Computer Engineering student at UGA with a 3.8 GPA, focused on robotics, computer vision, and automation.</p>
     <div class="hero-actions">
       <a href="#experience" class="btn-primary">View Work</a>
-      <a href="/cdn-cgi/l/email-protection#214c4444555b4444404d485249404f61464c40484d0f424e4c" class="btn-ghost">Get in Touch</a>
+      <a href="mailto:meetzeealishan@gmail.com" class="btn-ghost">Get in Touch</a>
     </div>
   </div>
   <div class="hero-right">
     <div class="hero-accent-bar"></div>
     <div class="hero-grid-bg"></div>
-
-    <!-- =====================================================
-         YOUR PHOTO — replace src="" with your image path
-         e.g. src="photo.jpg" or a full URL
-         Recommended: portrait, at least 800px tall
-         ===================================================== -->
     <div class="hero-photo-wrap">
-      <img class="hero-photo" src="IMG_0367_used (1).jpg" alt="Zeeshan Ali"
-           onerror="this.style.display='none'" />
+      <img class="hero-photo" src="IMG_0367_used (1).jpg" alt="Zeeshan Ali" onerror="this.style.display='none'" />
       <div class="hero-photo-placeholder">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="1">
-          <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-        </svg>
-        <span>Add your photo here<br/>src="IMG_0367_used (1).jpg"</span>
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="1"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span>Add your photo here</span>
       </div>
     </div>
-
     <div class="hero-stat-stack">
-      <div class="hero-stat">
-        <span class="hero-stat-num">3.8</span>
-        <span class="hero-stat-label">GPA · Dean's List</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-num">3+</span>
-        <span class="hero-stat-label">Internships</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-num">2028+</span>
-        <span class="hero-stat-label">Graduation</span>
-      </div>
+      <div class="hero-stat"><span class="hero-stat-num">3.8</span><span class="hero-stat-label">GPA &middot; Dean's List</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">3+</span><span class="hero-stat-label">Internships</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">2028</span><span class="hero-stat-label">Graduation</span></div>
     </div>
     <div class="hero-scroll-hint">
       <div class="scroll-line"></div>
@@ -807,14 +285,14 @@
     <span class="marquee-item">Robotics</span>
     <span class="marquee-item">IoT Architecture</span>
     <span class="marquee-item">PCB Design</span>
-    <span class="marquee-item">Python & C++</span>
+    <span class="marquee-item">Python &amp; C++</span>
     <span class="marquee-item">AI Engineering</span>
     <span class="marquee-item">Computer Vision</span>
     <span class="marquee-item">Embedded Systems</span>
     <span class="marquee-item">Robotics</span>
     <span class="marquee-item">IoT Architecture</span>
     <span class="marquee-item">PCB Design</span>
-    <span class="marquee-item">Python & C++</span>
+    <span class="marquee-item">Python &amp; C++</span>
   </div>
 </div>
 
@@ -822,59 +300,39 @@
 <section id="about">
   <div class="about-left">
     <div class="section-tag reveal">[ About Me ]</div>
-    <h2 class="section-heading reveal reveal-delay-1">
-      ENGI&shy;NEER<br/>BY<br/>INSTINCT
-    </h2>
-    <p class="about-body reveal reveal-delay-2">
-      I'm a <strong>Computer Engineering student at the University of Georgia</strong>, graduating May 2028. 
-      I thrive at the hardware-software boundary — building AI-powered systems that interact with the physical world.
-      <br/><br/>
-      From deploying enterprise AI chatbots for 4,000+ employees to designing autonomous robots and IoT sensor systems, 
-      I've consistently built solutions that bridge complex technical layers into something real and impactful.
-    </p>
+    <h2 class="section-heading reveal reveal-delay-1">ENGI&shy;NEER<br/>BY<br/>INSTINCT</h2>
+    <p class="about-body reveal reveal-delay-2">I'm a <strong>Computer Engineering student at the University of Georgia</strong>, graduating May 2028. I thrive at the hardware-software boundary &mdash; building AI-powered systems that interact with the physical world.<br/><br/>From deploying enterprise AI chatbots for 4,000+ employees to designing autonomous robots and IoT sensor systems, I've consistently built solutions that bridge complex technical layers into something real and impactful.</p>
   </div>
   <div class="about-right">
     <div class="about-info-row reveal">
       <span class="about-info-label">Education</span>
-      <span class="about-info-value">B.S. Computer Engineering — UGA</span>
-      <span class="about-info-sub">Dean's List · GPA 3.8 · May 2028</span>
+      <span class="about-info-value">B.S. Computer Engineering &mdash; UGA</span>
+      <span class="about-info-sub">Dean's List &middot; GPA 3.8 &middot; May 2028</span>
     </div>
     <div class="about-info-row reveal reveal-delay-1">
       <span class="about-info-label">Relevant Coursework</span>
-      <span class="about-info-value">Logic Design · Software Development · Circuits</span>
-      <span class="about-info-sub">Data Science · OOP · Computing</span>
+      <span class="about-info-value">Logic Design &middot; Software Development &middot; Circuits</span>
+      <span class="about-info-sub">Data Science &middot; OOP &middot; Computing</span>
     </div>
     <div class="about-info-row reveal reveal-delay-2">
       <span class="about-info-label">Organizations</span>
-      <span class="about-info-value">Institute of Electrical and Electronic Engineering</span>
-      <span class="about-info-sub">MicroMouse Competition Team & First-Year Council</span>
+      <span class="about-info-value">Institute of Electrical and Electronics Engineering</span>
+      <span class="about-info-sub">MicroMouse Competition Team &amp; First-Year Council</span>
     </div>
     <div class="about-info-row reveal reveal-delay-3">
       <span class="about-info-label">Location</span>
       <span class="about-info-value">Atlanta, GA</span>
-      <span class="about-info-sub">Open to remote & relocation</span>
+      <span class="about-info-sub">Open to remote &amp; relocation</span>
     </div>
   </div>
 </section>
 
 <!-- STATS BAND -->
 <div class="stats-band">
-  <div class="stat-cell reveal">
-    <span class="stat-big">200+</span>
-    <span class="stat-desc">Client accounts managed & scaled with automation</span>
-  </div>
-  <div class="stat-cell reveal reveal-delay-1">
-    <span class="stat-big">4K+</span>
-    <span class="stat-desc">Employees served by enterprise AI chatbot I led</span>
-  </div>
-  <div class="stat-cell reveal reveal-delay-2">
-    <span class="stat-big">70%</span>
-    <span class="stat-desc">Reduction in manual monitoring via engineered APIs</span>
-  </div>
-  <div class="stat-cell reveal reveal-delay-3">
-    <span class="stat-big">300+</span>
-    <span class="stat-desc">Students & sponsors reached at engineering showcase</span>
-  </div>
+  <div class="stat-cell reveal"><span class="stat-big">200+</span><span class="stat-desc">Client accounts managed &amp; scaled with automation</span></div>
+  <div class="stat-cell reveal reveal-delay-1"><span class="stat-big">4K+</span><span class="stat-desc">Employees served by enterprise AI chatbot I led</span></div>
+  <div class="stat-cell reveal reveal-delay-2"><span class="stat-big">70%</span><span class="stat-desc">Reduction in manual monitoring via engineered APIs</span></div>
+  <div class="stat-cell reveal reveal-delay-3"><span class="stat-big">300+</span><span class="stat-desc">Students &amp; sponsors reached at engineering showcase</span></div>
 </div>
 
 <!-- EXPERIENCE -->
@@ -888,11 +346,11 @@
   <div class="exp-grid">
     <div class="exp-card reveal">
       <div class="exp-num">01</div>
-      <div class="exp-role">IT & Automation Intern</div>
-      <div class="exp-company">Make It Loud Web — Buford, GA</div>
-      <div class="exp-period">June 2025 – August 2025</div>
+      <div class="exp-role">IT &amp; Automation Intern</div>
+      <div class="exp-company">Make It Loud Web &mdash; Buford, GA</div>
+      <div class="exp-period">June 2025 &ndash; August 2025</div>
       <ul class="exp-bullets">
-        <li>Built & launched automated SEO analytics product across 200+ client accounts</li>
+        <li>Built &amp; launched automated SEO analytics product across 200+ client accounts</li>
         <li>Engineered real-time APIs with live logs, timers, and pause/resume controls</li>
         <li>Integrated AI-assisted keyword ranking classification for page accuracy</li>
         <li>Reduced manual intervention by ~70% in long-running automation workflows</li>
@@ -901,10 +359,10 @@
     <div class="exp-card reveal reveal-delay-1">
       <div class="exp-num">02</div>
       <div class="exp-role">AI Development Intern</div>
-      <div class="exp-company">Ajanta Electrical Industries — India</div>
+      <div class="exp-company">Ajanta Electrical Industries &mdash; India</div>
       <div class="exp-period">June 2025</div>
       <ul class="exp-bullets">
-        <li>Presented AI-powered Smart Panel with 5 IoT sensors & thermal cameras</li>
+        <li>Presented AI-powered Smart Panel with 5 IoT sensors &amp; thermal cameras</li>
         <li>Designed end-to-end IT architecture for AI-powered sensor prototype</li>
         <li>Integrated IoT devices, cloud data ingestion, AI/ML engine for predictive maintenance</li>
         <li>Hands-on with LT control panels, assembly flow, and electrical blueprints</li>
@@ -913,11 +371,11 @@
     <div class="exp-card reveal reveal-delay-2">
       <div class="exp-num">03</div>
       <div class="exp-role">AI Analyst Intern</div>
-      <div class="exp-company">VDart Inc. — Alpharetta, GA</div>
-      <div class="exp-period">August 2024 – May 2025</div>
+      <div class="exp-company">VDart Inc. &mdash; Alpharetta, GA</div>
+      <div class="exp-period">August 2024 &ndash; May 2025</div>
       <ul class="exp-bullets">
         <li>Led AI intern team building enterprise chatbot for 4,000+ employees</li>
-        <li>Enabled NL queries over company data — customers, code repos, use cases</li>
+        <li>Enabled NL queries over company data &mdash; customers, code repos, use cases</li>
         <li>AWS Cloud certified; applied cloud fundamentals to production workflows</li>
         <li>Managed IT resources for clients valued at $1M+</li>
       </ul>
@@ -931,179 +389,103 @@
     <div class="section-tag reveal">[ Projects ]</div>
     <h2 class="section-heading reveal reveal-delay-1">BUILT.<br/>SHIPPED.<br/>SHOWCASED.</h2>
   </div>
-  <div class="proj-large">
-    <div class="proj-card reveal">
-      <span class="proj-arrow">↗</span>
 
-      <!-- ── CAROUSEL: AI E-Waste Sorter ──────────────────────────
-           Add up to 4 images. Replace src="" values with your filenames.
-           Leave src="" blank to show a placeholder for that slot.
-      ──────────────────────────────────────────────────────────── -->
+  <div class="proj-large">
+    <!-- PROJECT 1: AI E-Waste Sorter -->
+    <div class="proj-card reveal">
+      <span class="proj-arrow">&#8599;</span>
       <div class="proj-carousel" data-carousel>
         <div class="carousel-track">
-          <div class="carousel-slide">
-            <img src="E-Waste Sorter 1.png" alt="E-Waste Sorter 1" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>ewaste-1.jpg</span></div>'" />
-          </div>
-          <div class="carousel-slide">
-            <img src="E-Waste Sorter 2.png" alt="E-Waste Sorter 2" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>ewaste-2.jpg</span></div>'" />
-          </div>
-          <div class="carousel-slide">
-            <img src="E-Waste Sorter 3.png" alt="E-Waste Sorter 3" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>ewaste-3.jpg</span></div>'" />
-          </div>
-          <div class="carousel-slide">
-            <img src="E-Waste Sorter 4.JPG" alt="E-Waste Sorter 4" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>ewaste-4.jpg</span></div>'" />
-          </div>
+          <div class="carousel-slide"><img src="E-Waste Sorter 1.png" alt="E-Waste Sorter 1" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=&quot;0 0 24 24&quot; fill=none stroke=&quot;#00e5ff&quot; stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=&quot;M21 15l-5-5L5 21&quot;/></svg><span>No image</span></div>'" /></div>
+          <div class="carousel-slide"><img src="E-Waste Sorter 2.png" alt="E-Waste Sorter 2" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=&quot;0 0 24 24&quot; fill=none stroke=&quot;#00e5ff&quot; stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=&quot;M21 15l-5-5L5 21&quot;/></svg><span>No image</span></div>'" /></div>
+          <div class="carousel-slide"><img src="E-Waste Sorter 3.png" alt="E-Waste Sorter 3" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=&quot;0 0 24 24&quot; fill=none stroke=&quot;#00e5ff&quot; stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=&quot;M21 15l-5-5L5 21&quot;/></svg><span>No image</span></div>'" /></div>
+          <div class="carousel-slide"><img src="E-Waste Sorter 4.JPG" alt="E-Waste Sorter 4" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=&quot;0 0 24 24&quot; fill=none stroke=&quot;#00e5ff&quot; stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=&quot;M21 15l-5-5L5 21&quot;/></svg><span>No image</span></div>'" /></div>
         </div>
         <button class="carousel-btn prev" aria-label="Previous">&#8592;</button>
         <button class="carousel-btn next" aria-label="Next">&#8594;</button>
         <div class="carousel-dots"></div>
         <div class="carousel-counter">1 / 4</div>
-        <div class="expand-hint">⤢ Click to expand</div>
+        <div class="expand-hint">&#10562; Click to expand</div>
       </div>
-
-      <div class="proj-tag">IEEE · Computer Vision</div>
+      <div class="proj-tag">IEEE &middot; Computer Vision</div>
       <h3 class="proj-title">AI ELECTRONIC<br/>WASTE SORTER</h3>
-      <p class="proj-desc">
-        Building an AI-powered embedded vision system on Raspberry Pi 5 using YOLOv8, detecting and classifying 
-        5 e-waste components from live camera feeds with real-time inference accuracy above 90%. 
-        Closed-loop automation via GPIO/PWM motor control.
-      </p>
+      <p class="proj-desc">Building an AI-powered embedded vision system on Raspberry Pi 5 using YOLOv8, detecting and classifying 5 e-waste components from live camera feeds with real-time inference accuracy above 90%. Closed-loop automation via GPIO/PWM motor control.</p>
       <div class="proj-tech">
-        <span class="tech-pill">Python</span>
-        <span class="tech-pill">PyTorch</span>
-        <span class="tech-pill">YOLOv8</span>
-        <span class="tech-pill">OpenCV</span>
-        <span class="tech-pill">Raspberry Pi 5</span>
-        <span class="tech-pill">GPIO/PWM</span>
+        <span class="tech-pill">Python</span><span class="tech-pill">PyTorch</span><span class="tech-pill">YOLOv8</span><span class="tech-pill">OpenCV</span><span class="tech-pill">Raspberry Pi 5</span><span class="tech-pill">GPIO/PWM</span>
       </div>
     </div>
-    <div class="proj-card reveal reveal-delay-1">
-      <span class="proj-arrow">↗</span>
 
-      <!-- ── CAROUSEL: Autonomous Goalie Robot ────────────────────
-           Add up to 4 images. Replace src="" values with your filenames.
-      ──────────────────────────────────────────────────────────── -->
+    <!-- PROJECT 2: MIL SEO Bot -->
+    <div class="proj-card reveal reveal-delay-1">
+      <span class="proj-arrow">&#8599;</span>
       <div class="proj-carousel" data-carousel>
         <div class="carousel-track">
-          <div class="carousel-slide">
-            <img src="MIL Robot 1.png" alt="MIL Robot 1" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>goalie-1.jpg</span></div>'" />
-          </div>
-          <div class="carousel-slide">
-            <img src="MIL Robot 2.png" alt="MIL Robot 2" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>goalie-2.jpg</span></div>'" />
-          </div>
-          <div class="carousel-slide">
-            <img src="MIL Robot 3.png" alt="MIL Robot 3" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>goalie-3.jpg</span></div>'" />
-          </div>
-          <div class="carousel-slide">
-            <img src="MIL Robot 4.png" alt="MIL Robot 4" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>goalie-4.jpg</span></div>'" />
-          </div>
+          <div class="carousel-slide"><img src="MIL Robot 1.png" alt="MIL Robot 1" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=&quot;0 0 24 24&quot; fill=none stroke=&quot;#00e5ff&quot; stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=&quot;M21 15l-5-5L5 21&quot;/></svg><span>No image</span></div>'" /></div>
+          <div class="carousel-slide"><img src="MIL Robot 2.png" alt="MIL Robot 2" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=&quot;0 0 24 24&quot; fill=none stroke=&quot;#00e5ff&quot; stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=&quot;M21 15l-5-5L5 21&quot;/></svg><span>No image</span></div>'" /></div>
+          <div class="carousel-slide"><img src="MIL Robot 3.png" alt="MIL Robot 3" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=&quot;0 0 24 24&quot; fill=none stroke=&quot;#00e5ff&quot; stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=&quot;M21 15l-5-5L5 21&quot;/></svg><span>No image</span></div>'" /></div>
+          <div class="carousel-slide"><img src="MIL Robot 4.png" alt="MIL Robot 4" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=&quot;0 0 24 24&quot; fill=none stroke=&quot;#00e5ff&quot; stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=&quot;M21 15l-5-5L5 21&quot;/></svg><span>No image</span></div>'" /></div>
         </div>
         <button class="carousel-btn prev" aria-label="Previous">&#8592;</button>
         <button class="carousel-btn next" aria-label="Next">&#8594;</button>
         <div class="carousel-dots"></div>
         <div class="carousel-counter">1 / 4</div>
-        <div class="expand-hint">⤢ Click to expand</div>
+        <div class="expand-hint">&#10562; Click to expand</div>
       </div>
-
-      <div class="proj-tag">Python · Automation</div>
-      <h3 class="proj-title">SEO<br/>KEYWORD RESEARCH BOT</h3>
-      <p class="proj-desc">
-        The MIL Spot Bot is an automated SEO spot-checking tool built with Python, Flask, and Selenium that helps users quickly determine whether a target website appears on the first or second page of Google search results for selected keyword and city combinations. Designed with a modern, user-friendly web interface, it supports multiple keyword and city inputs, real-time progress tracking with pause/resume functionality, and result export options. Using undetected ChromeDriver to minimize CAPTCHA interruptions, MIL Spot Bot streamlines the process of monitoring search rankings, saving time and effort for SEO professionals and businesses. The exported results can then be imported into SEMrush to calculate and track the site’s visibility score over time.
-      </p>
+      <div class="proj-tag">Python &middot; Automation</div>
+      <h3 class="proj-title">SEO AUTONOMOUS<br/>KEYWORD RESEARCH</h3>
+      <p class="proj-desc">MIL Spot Bot is an automated SEO spot-checking tool built with Python, Flask, and Selenium that determines whether a target website appears on page 1 or 2 of Google for selected keyword and city combinations. Supports real-time progress tracking, pause/resume, and result export to SEMrush for visibility scoring.</p>
       <div class="proj-tech">
-        <span class="tech-pill">Automation</span>
-        <span class="tech-pill">Python</span>
-        <span class="tech-pill">UI/UX</span>
-        <span class="tech-pill">Headless Searches</span>
-        <span class="tech-pill">Chromium</span>
+        <span class="tech-pill">Python</span><span class="tech-pill">Flask</span><span class="tech-pill">Selenium</span><span class="tech-pill">SEO</span><span class="tech-pill">Automation</span><span class="tech-pill">UI/UX</span>
       </div>
     </div>
   </div>
-  <div class="proj-large">
-    <div class="proj-card reveal">
-      <span class="proj-arrow">↗</span>
 
-      <!-- ── CAROUSEL: MicroMouse Competition Bot ──────────────────
-           Add up to 4 images. Replace src="" values with your filenames.
-      ──────────────────────────────────────────────────────────── -->
+  <div class="proj-large">
+    <!-- PROJECT 3: MicroMouse -->
+    <div class="proj-card reveal">
+      <span class="proj-arrow">&#8599;</span>
       <div class="proj-carousel" data-carousel>
         <div class="carousel-track">
-          <div class="carousel-slide">
-            <img src="MicroMouse 1.png" alt="MicroMouse 1" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>micromouse-1.jpg</span></div>'" />
-          </div>
-          <div class="carousel-slide">
-            <img src="MicroMouse 2.png" alt="MicroMouse 2" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>micromouse-2.jpg</span></div>'" />
-          </div>
-          <div class="carousel-slide">
-            <img src="MicroMouse 3.png" alt="MicroMouse 3" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>micromouse-3.jpg</span></div>'" />
-          </div>
-          <div class="carousel-slide">
-            <img src="MicroMouse 4.png" alt="MicroMouse 4" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>micromouse-4.jpg</span></div>'" />
-          </div>
+          <div class="carousel-slide"><img src="MicroMouse 1.png" alt="MicroMouse 1" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=&quot;0 0 24 24&quot; fill=none stroke=&quot;#00e5ff&quot; stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=&quot;M21 15l-5-5L5 21&quot;/></svg><span>No image</span></div>'" /></div>
+          <div class="carousel-slide"><img src="MicroMouse 2.png" alt="MicroMouse 2" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=&quot;0 0 24 24&quot; fill=none stroke=&quot;#00e5ff&quot; stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=&quot;M21 15l-5-5L5 21&quot;/></svg><span>No image</span></div>'" /></div>
+          <div class="carousel-slide"><img src="MicroMouse 3.png" alt="MicroMouse 3" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=&quot;0 0 24 24&quot; fill=none stroke=&quot;#00e5ff&quot; stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=&quot;M21 15l-5-5L5 21&quot;/></svg><span>No image</span></div>'" /></div>
+          <div class="carousel-slide"><img src="MicroMouse 4.png" alt="MicroMouse 4" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=&quot;0 0 24 24&quot; fill=none stroke=&quot;#00e5ff&quot; stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=&quot;M21 15l-5-5L5 21&quot;/></svg><span>No image</span></div>'" /></div>
         </div>
         <button class="carousel-btn prev" aria-label="Previous">&#8592;</button>
         <button class="carousel-btn next" aria-label="Next">&#8594;</button>
         <div class="carousel-dots"></div>
         <div class="carousel-counter">1 / 4</div>
-        <div class="expand-hint">⤢ Click to expand</div>
+        <div class="expand-hint">&#10562; Click to expand</div>
       </div>
-
-      <div class="proj-tag">IEEE · PCB Design · Ongoing</div>
+      <div class="proj-tag">IEEE &middot; PCB Design &middot; Ongoing</div>
       <h3 class="proj-title">MICROMOUSE<br/>COMPETITION BOT</h3>
-      <p class="proj-desc">
-        Designing schematics and PCB in Altium for a fully autonomous mouse with a 3×6 in. frame to traverse 
-        a 10×10 ft. maze. Researching IR sensors, H-bridge motor drivers, IMUs, and power regulation with buck converters.
-      </p>
+      <p class="proj-desc">Designing schematics and PCB in Altium for a fully autonomous mouse with a 3&times;6 in. frame to traverse a 10&times;10 ft. maze. Researching IR sensors, H-bridge motor drivers, IMUs, and power regulation with buck converters.</p>
       <div class="proj-tech">
-        <span class="tech-pill">Altium</span>
-        <span class="tech-pill">Autodesk Fusion</span>
-        <span class="tech-pill">MultiSim</span>
-        <span class="tech-pill">IR Sensors</span>
-        <span class="tech-pill">H-Bridge</span>
-        <span class="tech-pill">IMU</span>
+        <span class="tech-pill">Altium</span><span class="tech-pill">Autodesk Fusion</span><span class="tech-pill">MultiSim</span><span class="tech-pill">IR Sensors</span><span class="tech-pill">H-Bridge</span><span class="tech-pill">IMU</span>
       </div>
     </div>
-    <div class="proj-card reveal reveal-delay-1">
-      <span class="proj-arrow">↗</span>
 
-      <!-- ── CAROUSEL: Smart Electrical Panel ─────────────────────
-           Add up to 4 images. Replace src="" values with your filenames.
-      ──────────────────────────────────────────────────────────── -->
+    <!-- PROJECT 4: Smart Electrical Panel -->
+    <div class="proj-card reveal reveal-delay-1">
+      <span class="proj-arrow">&#8599;</span>
       <div class="proj-carousel" data-carousel>
         <div class="carousel-track">
-          <div class="carousel-slide">
-            <img src="Smart Panel 1.png" alt="Smart Panel 1" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>panel-1.jpg</span></div>'" />
-          </div>
-          <div class="carousel-slide">
-            <img src="Smart Panel 2.png" alt="Smart Panel 2" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>panel-2.jpg</span></div>'" />
-          </div>
-          <div class="carousel-slide">
-            <img src="Smart Panel 3.png" alt="Smart Panel 3" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>panel-3.jpg</span></div>'" />
-          </div>
-          <div class="carousel-slide">
-            <img src="Smart Panel 4.png" alt="Smart Panel 4" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>panel-4.jpg</span></div>'" />
-          </div>
+          <div class="carousel-slide"><img src="Smart Panel 1.png" alt="Smart Panel 1" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=&quot;0 0 24 24&quot; fill=none stroke=&quot;#00e5ff&quot; stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=&quot;M21 15l-5-5L5 21&quot;/></svg><span>No image</span></div>'" /></div>
+          <div class="carousel-slide"><img src="Smart Panel 2.png" alt="Smart Panel 2" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=&quot;0 0 24 24&quot; fill=none stroke=&quot;#00e5ff&quot; stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=&quot;M21 15l-5-5L5 21&quot;/></svg><span>No image</span></div>'" /></div>
+          <div class="carousel-slide"><img src="Smart Panel 3.png" alt="Smart Panel 3" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=&quot;0 0 24 24&quot; fill=none stroke=&quot;#00e5ff&quot; stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=&quot;M21 15l-5-5L5 21&quot;/></svg><span>No image</span></div>'" /></div>
+          <div class="carousel-slide"><img src="Smart Panel 4.png" alt="Smart Panel 4" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=&quot;0 0 24 24&quot; fill=none stroke=&quot;#00e5ff&quot; stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=&quot;M21 15l-5-5L5 21&quot;/></svg><span>No image</span></div>'" /></div>
         </div>
         <button class="carousel-btn prev" aria-label="Previous">&#8592;</button>
         <button class="carousel-btn next" aria-label="Next">&#8594;</button>
         <div class="carousel-dots"></div>
         <div class="carousel-counter">1 / 4</div>
-        <div class="expand-hint">⤢ Click to expand</div>
+        <div class="expand-hint">&#10562; Click to expand</div>
       </div>
-
-      <div class="proj-tag">IoT · Industrial AI</div>
+      <div class="proj-tag">IoT &middot; Industrial AI</div>
       <h3 class="proj-title">SMART ELECTRICAL<br/>PANEL PROTOTYPE</h3>
-      <p class="proj-desc">
-        Designed a complete end-to-end AI IoT system integrating 5 sensors, thermal cameras, 
-        and predictive maintenance models for industrial panel health monitoring — presented to 10 executive members 
-        at an ISO 9001-certified manufacturing facility.
-      </p>
+      <p class="proj-desc">Designed a complete end-to-end AI IoT system integrating 5 sensors, thermal cameras, and predictive maintenance models for industrial panel health monitoring &mdash; presented to 10 executive members at an ISO 9001-certified manufacturing facility.</p>
       <div class="proj-tech">
-        <span class="tech-pill">IoT Sensors</span>
-        <span class="tech-pill">Thermal Cameras</span>
-        <span class="tech-pill">Cloud Ingestion</span>
-        <span class="tech-pill">AI/ML Engine</span>
-        <span class="tech-pill">Dashboard UI</span>
+        <span class="tech-pill">IoT Sensors</span><span class="tech-pill">Thermal Cameras</span><span class="tech-pill">Cloud Ingestion</span><span class="tech-pill">AI/ML Engine</span><span class="tech-pill">Dashboard UI</span>
       </div>
     </div>
   </div>
@@ -1114,59 +496,30 @@
   <div class="section-tag reveal">[ Technical Proficiencies ]</div>
   <h2 class="section-heading reveal reveal-delay-1">THE<br/>STACK</h2>
   <div class="skills-layout">
-    <p class="skills-intro reveal reveal-delay-2">
-      A broad toolkit spanning hardware design, AI/ML, and full-stack software — built through hands-on internships, 
-      IEEE projects, and independent builds.
-    </p>
+    <p class="skills-intro reveal reveal-delay-2">A broad toolkit spanning hardware design, AI/ML, and full-stack software &mdash; built through hands-on internships, IEEE projects, and independent builds.</p>
     <div class="skills-grid">
       <div class="skill-category reveal">
-        <div class="skill-cat-title">Software & Programming</div>
+        <div class="skill-cat-title">Software &amp; Programming</div>
         <div class="skill-tags">
-          <span class="skill-tag">Python</span>
-          <span class="skill-tag">C++</span>
-          <span class="skill-tag">Java</span>
-          <span class="skill-tag">MATLAB</span>
-          <span class="skill-tag">GitHub</span>
-          <span class="skill-tag">Unix / Bash</span>
-          <span class="skill-tag">VS Code</span>
-          <span class="skill-tag">Eclipse IDE</span>
-          <span class="skill-tag">OOP</span>
+          <span class="skill-tag">Python</span><span class="skill-tag">C++</span><span class="skill-tag">Java</span><span class="skill-tag">MATLAB</span><span class="skill-tag">GitHub</span><span class="skill-tag">Unix / Bash</span><span class="skill-tag">VS Code</span><span class="skill-tag">Eclipse IDE</span><span class="skill-tag">OOP</span>
         </div>
       </div>
       <div class="skill-category reveal reveal-delay-1">
-        <div class="skill-cat-title">AI / ML & Computer Vision</div>
+        <div class="skill-cat-title">AI / ML &amp; Computer Vision</div>
         <div class="skill-tags">
-          <span class="skill-tag">PyTorch</span>
-          <span class="skill-tag">YOLOv8</span>
-          <span class="skill-tag">OpenCV</span>
-          <span class="skill-tag">LangChain</span>
-          <span class="skill-tag">AWS Cloud</span>
-          <span class="skill-tag">AI Chatbot Dev</span>
-          <span class="skill-tag">NLP Pipelines</span>
+          <span class="skill-tag">PyTorch</span><span class="skill-tag">YOLOv8</span><span class="skill-tag">OpenCV</span><span class="skill-tag">LangChain</span><span class="skill-tag">AWS Cloud</span><span class="skill-tag">AI Chatbot Dev</span><span class="skill-tag">NLP Pipelines</span>
         </div>
       </div>
       <div class="skill-category reveal reveal-delay-2">
-        <div class="skill-cat-title">Hardware & Embedded</div>
+        <div class="skill-cat-title">Hardware &amp; Embedded</div>
         <div class="skill-tags">
-          <span class="skill-tag">Altium Designer</span>
-          <span class="skill-tag">Autodesk Fusion</span>
-          <span class="skill-tag">MultiSim</span>
-          <span class="skill-tag">Raspberry Pi</span>
-          <span class="skill-tag">Arduino</span>
-          <span class="skill-tag">GPIO / PWM</span>
-          <span class="skill-tag">Circuit Design</span>
-          <span class="skill-tag">PCB Design</span>
-          <span class="skill-tag">SolidWorks</span>
+          <span class="skill-tag">Altium Designer</span><span class="skill-tag">Autodesk Fusion</span><span class="skill-tag">MultiSim</span><span class="skill-tag">Raspberry Pi</span><span class="skill-tag">Arduino</span><span class="skill-tag">GPIO / PWM</span><span class="skill-tag">Circuit Design</span><span class="skill-tag">PCB Design</span><span class="skill-tag">SolidWorks</span>
         </div>
       </div>
       <div class="skill-category reveal reveal-delay-3">
-        <div class="skill-cat-title">Tools & Platforms</div>
+        <div class="skill-cat-title">Tools &amp; Platforms</div>
         <div class="skill-tags">
-          <span class="skill-tag">Microsoft 365</span>
-          <span class="skill-tag">WordPress</span>
-          <span class="skill-tag">SEO Analytics</span>
-          <span class="skill-tag">Power Tools</span>
-          <span class="skill-tag">Fabrication</span>
+          <span class="skill-tag">Microsoft 365</span><span class="skill-tag">WordPress</span><span class="skill-tag">SEO Analytics</span><span class="skill-tag">Power Tools</span><span class="skill-tag">Fabrication</span>
         </div>
       </div>
     </div>
@@ -1179,42 +532,25 @@
   <div class="contact-layout">
     <div class="contact-left">
       <div class="section-tag reveal">[ Let's Connect ]</div>
-      <h2 class="contact-heading reveal reveal-delay-1">
-        LET'S<br/>BUILD<br/><span>SOMETHING.</span>
-      </h2>
-      <p class="contact-sub reveal reveal-delay-2">
-        Open to internship opportunities, research collaborations, and engineering roles. 
-        Whether you have a project or just want to talk tech — reach out.
-      </p>
+      <h2 class="contact-heading reveal reveal-delay-1">LET'S<br/>BUILD<br/><span>SOMETHING.</span></h2>
+      <p class="contact-sub reveal reveal-delay-2">Open to internship opportunities, research collaborations, and engineering roles. Whether you have a project or just want to talk tech &mdash; reach out.</p>
     </div>
     <div class="contact-right">
-      <a href="/cdn-cgi/l/email-protection#e78a8282939d8282868b8e948f8689a7808a868e8bc984888a" class="contact-link reveal">
-        <div>
-          <div class="contact-link-label">Email</div>
-          <div class="contact-link-val"><span class="__cf_email__" data-cfemail="79141c1c0d031c1c1815100a111817391e14181015571a1614">[meetzeealishan@gmail.com]</span></div>
-        </div>
-        <span class="contact-link-arrow">↗</span>
+      <a href="mailto:meetzeealishan@gmail.com" class="contact-link reveal">
+        <div><div class="contact-link-label">Email</div><div class="contact-link-val">meetzeealishan@gmail.com</div></div>
+        <span class="contact-link-arrow">&#8599;</span>
       </a>
       <a href="tel:4708076265" class="contact-link reveal reveal-delay-1">
-        <div>
-          <div class="contact-link-label">Phone</div>
-          <div class="contact-link-val">470-807-6265</div>
-        </div>
-        <span class="contact-link-arrow">↗</span>
+        <div><div class="contact-link-label">Phone</div><div class="contact-link-val">470-807-6265</div></div>
+        <span class="contact-link-arrow">&#8599;</span>
       </a>
       <a href="https://www.linkedin.com/in/zeeshan-ali-929101261/" target="_blank" class="contact-link reveal reveal-delay-2">
-        <div>
-          <div class="contact-link-label">LinkedIn</div>
-          <div class="contact-link-val">linkedin.com/in/zeeshan-ali-929101261</div>
-        </div>
-        <span class="contact-link-arrow">↗</span>
+        <div><div class="contact-link-label">LinkedIn</div><div class="contact-link-val">linkedin.com/in/zeeshan-ali-929101261</div></div>
+        <span class="contact-link-arrow">&#8599;</span>
       </a>
       <a href="https://www.google.com/maps/place/Atlanta,+GA" target="_blank" class="contact-link reveal reveal-delay-3">
-        <div>
-          <div class="contact-link-label">Location</div>
-          <div class="contact-link-val">Atlanta, Georgia</div>
-        </div>
-        <span class="contact-link-arrow">↗</span>
+        <div><div class="contact-link-label">Location</div><div class="contact-link-val">Atlanta, Georgia</div></div>
+        <span class="contact-link-arrow">&#8599;</span>
       </a>
     </div>
   </div>
@@ -1222,11 +558,9 @@
 
 <!-- LIGHTBOX -->
 <div id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
-  <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+  <button class="lb-close" id="lbClose" aria-label="Close">&#10005;</button>
   <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous">&#8592;</button>
-  <div class="lb-img-wrap">
-    <img id="lb-img" src="" alt="Project image expanded" />
-  </div>
+  <div class="lb-img-wrap"><img id="lb-img" src="" alt="Project image expanded" /></div>
   <button class="lb-nav lb-next" id="lbNext" aria-label="Next">&#8594;</button>
   <div class="lb-counter" id="lbCounter"></div>
 </div>
@@ -1234,55 +568,41 @@
 <!-- FOOTER -->
 <footer>
   <span class="footer-logo">ZEESHAN ALI</span>
-  <span class="footer-copy">© 2025 · Computer Engineering @ UGA</span>
-  <a href="#hero" class="footer-top">↑ Back to Top</a>
+  <span class="footer-copy">&copy; 2025 &middot; Computer Engineering @ UGA</span>
+  <a href="#hero" class="footer-top">&#8593; Back to Top</a>
 </footer>
 
 <script>
-  // Custom cursor
+  // CURSOR
   const cursor = document.getElementById('cursor');
   const cursorRing = document.getElementById('cursorRing');
   document.addEventListener('mousemove', e => {
     cursor.style.left = e.clientX + 'px';
     cursor.style.top = e.clientY + 'px';
-    setTimeout(() => {
-      cursorRing.style.left = e.clientX + 'px';
-      cursorRing.style.top = e.clientY + 'px';
-    }, 60);
+    setTimeout(() => { cursorRing.style.left = e.clientX + 'px'; cursorRing.style.top = e.clientY + 'px'; }, 60);
   });
   document.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      cursor.style.transform = 'translate(-50%, -50%) scale(2)';
-      cursorRing.style.transform = 'translate(-50%, -50%) scale(1.5)';
-    });
-    el.addEventListener('mouseleave', () => {
-      cursor.style.transform = 'translate(-50%, -50%) scale(1)';
-      cursorRing.style.transform = 'translate(-50%, -50%) scale(1)';
-    });
+    el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1.5)'; });
+    el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.transform = 'translate(-50%,-50%) scale(1)'; });
   });
 
-  // Scroll reveal
-  const revealEls = document.querySelectorAll('.reveal');
+  // SCROLL REVEAL
   const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) e.target.classList.add('visible');
-    });
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.1 });
-  revealEls.forEach(el => observer.observe(el));
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  // Nav active state
+  // NAV ACTIVE
   const sections = document.querySelectorAll('section[id]');
   window.addEventListener('scroll', () => {
     let current = '';
-    sections.forEach(sec => {
-      if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
-    });
+    sections.forEach(sec => { if (window.scrollY >= sec.offsetTop - 120) current = sec.id; });
     document.querySelectorAll('.nav-links a').forEach(a => {
       a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
     });
   });
 
-  // ── CAROUSEL ENGINE ──────────────────────────────────────────────
+  // CAROUSEL ENGINE
   document.querySelectorAll('[data-carousel]').forEach(carousel => {
     const track   = carousel.querySelector('.carousel-track');
     const slides  = carousel.querySelectorAll('.carousel-slide');
@@ -1291,8 +611,7 @@
     const dotsEl  = carousel.querySelector('.carousel-dots');
     const counter = carousel.querySelector('.carousel-counter');
     const total   = slides.length;
-    let current   = 0;
-    let timer     = null;
+    let current   = 0, timer = null;
 
     slides.forEach((_, i) => {
       const dot = document.createElement('button');
@@ -1305,9 +624,7 @@
     function goTo(index) {
       current = (index + total) % total;
       track.style.transform = 'translateX(-' + (current * 100) + '%)';
-      dotsEl.querySelectorAll('.carousel-dot').forEach((d, i) =>
-        d.classList.toggle('active', i === current)
-      );
+      dotsEl.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === current));
       counter.textContent = (current + 1) + ' / ' + total;
       resetTimer();
     }
@@ -1332,16 +649,14 @@
     resetTimer();
   });
 
-  // ── LIGHTBOX ENGINE ──────────────────────────────────────────────
+  // LIGHTBOX ENGINE
   const lightbox  = document.getElementById('lightbox');
   const lbImg     = document.getElementById('lb-img');
   const lbClose   = document.getElementById('lbClose');
   const lbPrev    = document.getElementById('lbPrev');
   const lbNext    = document.getElementById('lbNext');
   const lbCounter = document.getElementById('lbCounter');
-
-  let lbImages = [];
-  let lbIndex  = 0;
+  let lbImages = [], lbIndex = 0;
 
   function openLightbox(srcs, startIndex) {
     lbImages = srcs.filter(s => s && s.trim() !== '' && !s.endsWith('/'));
@@ -1367,20 +682,12 @@
 
   lbClose.addEventListener('click', closeLightbox);
   lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
-  lbPrev.addEventListener('click', e => {
-    e.stopPropagation();
-    lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length;
-    showLbSlide();
-  });
-  lbNext.addEventListener('click', e => {
-    e.stopPropagation();
-    lbIndex = (lbIndex + 1) % lbImages.length;
-    showLbSlide();
-  });
+  lbPrev.addEventListener('click', e => { e.stopPropagation(); lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; showLbSlide(); });
+  lbNext.addEventListener('click', e => { e.stopPropagation(); lbIndex = (lbIndex + 1) % lbImages.length; showLbSlide(); });
 
   document.addEventListener('keydown', e => {
     if (!lightbox.classList.contains('open')) return;
-    if (e.key === 'Escape')     closeLightbox();
+    if (e.key === 'Escape') closeLightbox();
     if (e.key === 'ArrowLeft')  { lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; showLbSlide(); }
     if (e.key === 'ArrowRight') { lbIndex = (lbIndex + 1) % lbImages.length; showLbSlide(); }
   });
@@ -1388,16 +695,15 @@
   document.querySelectorAll('[data-carousel]').forEach(carousel => {
     carousel.addEventListener('click', e => {
       if (e.target.closest('.carousel-btn')) return;
-      const imgs   = carousel.querySelectorAll('.carousel-slide img');
-      const srcs   = Array.from(imgs).map(img => img.src);
-      const track  = carousel.querySelector('.carousel-track');
-      const tx     = track.style.transform;
-      const match  = tx.match(/-?(\d+(?:\.\d+)?)%/);
+      const imgs  = carousel.querySelectorAll('.carousel-slide img');
+      const srcs  = Array.from(imgs).map(img => img.src);
+      const track = carousel.querySelector('.carousel-track');
+      const tx    = track.style.transform;
+      const match = tx.match(/-(\d+(?:\.\d+)?)%/);
       const active = match ? Math.round(parseFloat(match[1]) / 100) : 0;
       openLightbox(srcs, active);
     });
   });
-  // ─────────────────────────────────────────────────────────────────
 </script>
 </body>
 </html>
