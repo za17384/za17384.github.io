@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Zeeshan Ali — Computer Engineer</title>
+<title>Zeeshan Ali — Computer Systems Engineer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -238,7 +238,7 @@
   .hero-photo-wrap:has(.hero-photo) .hero-photo-placeholder { display: none; }
   .hero-accent-bar {
     position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    background: linear-gradient(deg, var(--accent), var(--accent2));
     z-index: 3;
   }
 
@@ -310,6 +310,71 @@
     font-family: 'Space Mono', monospace; font-size: 9px;
     letter-spacing: 0.1em; color: var(--text);
     background: rgba(10,10,10,0.7); padding: 3px 8px;
+  }
+  /* Expand hint shown on slide hover */
+  .carousel-slide { cursor: zoom-in; }
+  .expand-hint {
+    position: absolute; bottom: 10px; left: 10px; z-index: 10;
+    font-family: 'Space Mono', monospace; font-size: 9px;
+    letter-spacing: 0.1em; color: var(--text);
+    background: rgba(10,10,10,0.7); padding: 3px 8px;
+    display: flex; align-items: center; gap: 5px;
+    opacity: 0; transition: opacity 0.2s;
+    pointer-events: none;
+  }
+  .proj-carousel:hover .expand-hint { opacity: 1; }
+
+  /* LIGHTBOX */
+  #lightbox {
+    position: fixed; inset: 0; z-index: 10000;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  #lightbox.open { opacity: 1; pointer-events: all; }
+  .lb-img-wrap {
+    position: relative; max-width: 90vw; max-height: 88vh;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #lb-img {
+    max-width: 90vw; max-height: 85vh;
+    object-fit: contain;
+    border: 1px solid var(--border);
+    box-shadow: 0 0 80px rgba(0,229,255,0.08);
+    transform: scale(0.92);
+    transition: transform 0.35s cubic-bezier(.16,1,.3,1);
+    display: block;
+  }
+  #lightbox.open #lb-img { transform: scale(1); }
+  .lb-close {
+    position: fixed; top: 24px; right: 28px;
+    font-size: 28px; color: var(--muted);
+    background: none; border: none; cursor: pointer;
+    font-family: 'Space Mono', monospace;
+    transition: color 0.2s, transform 0.2s;
+    z-index: 10001; line-height: 1;
+  }
+  .lb-close:hover { color: var(--accent); transform: rotate(90deg); }
+  .lb-nav {
+    position: fixed; top: 50%; transform: translateY(-50%);
+    width: 44px; height: 44px;
+    background: rgba(10,10,10,0.8); border: 1px solid var(--border);
+    color: var(--text); font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background 0.2s, border-color 0.2s;
+    z-index: 10001;
+  }
+  .lb-nav:hover { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+  .lb-prev { left: 20px; }
+  .lb-next { right: 20px; }
+  .lb-counter {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    font-family: 'Space Mono', monospace; font-size: 10px;
+    letter-spacing: 0.15em; color: var(--muted);
+    background: rgba(10,10,10,0.7); padding: 5px 14px;
+    z-index: 10001;
   }
 
   /* MARQUEE */
@@ -689,7 +754,7 @@
     </p>
     <div class="hero-actions">
       <a href="#experience" class="btn-primary">View Work</a>
-      <a href="meetzeealishan@gmail.com" class="btn-ghost">Get in Touch</a>
+      <a href="/cdn-cgi/l/email-protection#214c4444555b4444404d485249404f61464c40484d0f424e4c" class="btn-ghost">Get in Touch</a>
     </div>
   </div>
   <div class="hero-right">
@@ -702,13 +767,13 @@
          Recommended: portrait, at least 800px tall
          ===================================================== -->
     <div class="hero-photo-wrap">
-      <img class="hero-photo" src="IMG_0367_used (1).jpg" alt="Zeeshan Ali"
+      <img class="hero-photo" src="" alt="Zeeshan Ali"
            onerror="this.style.display='none'" />
       <div class="hero-photo-placeholder">
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="1">
           <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
         </svg>
-        <span>Add your photo here<br/>src="IMG_0367_used (1).jpg"</span>
+        <span>Add your photo here<br/>src="your-photo.jpg"</span>
       </div>
     </div>
 
@@ -771,18 +836,18 @@
   <div class="about-right">
     <div class="about-info-row reveal">
       <span class="about-info-label">Education</span>
-      <span class="about-info-value">B.S. Computer Engineering — University of Georgia </span>
+      <span class="about-info-value">B.S. Computer Engineering — UGA</span>
       <span class="about-info-sub">Dean's List · GPA 3.8 · May 2028</span>
     </div>
     <div class="about-info-row reveal reveal-delay-1">
       <span class="about-info-label">Relevant Coursework</span>
       <span class="about-info-value">Logic Design · Software Development · Circuits</span>
-      <span class="about-info-sub">Data Science · OOP · Circuits</span>
+      <span class="about-info-sub">Data Science · OOP · Computing</span>
     </div>
     <div class="about-info-row reveal reveal-delay-2">
       <span class="about-info-label">Organizations</span>
-      <span class="about-info-value">Institute of Electrical and Electronics Engineers</span>
-      <span class="about-info-sub">MicroMouse Competition Team & First Year Council</span>
+      <span class="about-info-value">Institute of Electrical and Electronics Engineering</span>
+      <span class="about-info-sub">MicroMouse Competition Team & First-Year Council</span>
     </div>
     <div class="about-info-row reveal reveal-delay-3">
       <span class="about-info-label">Location</span>
@@ -893,6 +958,7 @@
         <button class="carousel-btn next" aria-label="Next">&#8594;</button>
         <div class="carousel-dots"></div>
         <div class="carousel-counter">1 / 4</div>
+        <div class="expand-hint">⤢ Click to expand</div>
       </div>
 
       <div class="proj-tag">IEEE · Computer Vision</div>
@@ -914,7 +980,7 @@
     <div class="proj-card reveal reveal-delay-1">
       <span class="proj-arrow">↗</span>
 
-      <!-- ── CAROUSEL: Autonomous Goalie Robot ────────────────────
+      <!-- ── CAROUSEL: MIL Robot ────────────────────
            Add up to 4 images. Replace src="" values with your filenames.
       ──────────────────────────────────────────────────────────── -->
       <div class="proj-carousel" data-carousel>
@@ -923,37 +989,33 @@
             <img src="MIL Robot 1.png" alt="MIL Robot 1" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>goalie-1.jpg</span></div>'" />
           </div>
           <div class="carousel-slide">
-            <img src="MIL Robot 2.png" alt="MIL Robot 2" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>goalie-2.jpg</span></div>'" />
+            <img src="MIL Robot 2.png" alt="Goalie Robot 2" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>goalie-2.jpg</span></div>'" />
           </div>
           <div class="carousel-slide">
-            <img src="MIL Robot 3.png" alt="MIL Robot 3" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>goalie-3.jpg</span></div>'" />
+            <img src="MIL Robot 3.png" alt="Goalie Robot 3" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>goalie-3.jpg</span></div>'" />
           </div>
           <div class="carousel-slide">
-            <img src="MIL Robot 4.png" alt="MIL Robot 4" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>goalie-4.jpg</span></div>'" />
+            <img src="MIL Robot 4.png" alt="Goalie Robot 4" onerror="this.parentElement.innerHTML='<div class=carousel-placeholder><svg width=36 height=36 viewBox=\'0 0 24 24\' fill=none stroke=\'#00e5ff\' stroke-width=1><rect x=3 y=3 width=18 height=18 rx=2/><circle cx=8.5 cy=8.5 r=1.5/><path d=\'M21 15l-5-5L5 21\'/></svg><span>goalie-4.jpg</span></div>'" />
           </div>
         </div>
         <button class="carousel-btn prev" aria-label="Previous">&#8592;</button>
         <button class="carousel-btn next" aria-label="Next">&#8594;</button>
         <div class="carousel-dots"></div>
         <div class="carousel-counter">1 / 4</div>
+        <div class="expand-hint">⤢ Click to expand</div>
       </div>
 
       <div class="proj-tag">Python · Automation</div>
-      <h3 class="proj-title">Search Engine Optimization<br/>Autonomous Keyword Research</h3>
+      <h3 class="proj-title">Search Engine Optimization<br/>AUTONOMOUS KEYWORD RESEARCH</h3>
       <p class="proj-desc">
-        The MIL Spot Bot is an automated SEO spot-checking tool built with Python, Flask, and Selenium that helps users quickly determine whether a target website appears on the 
-        first or second page of Google search results for selected keyword and city combinations. 
-        Designed with a modern, user-friendly web interface, it supports multiple keyword and city inputs, real-time progress tracking with pause/resume functionality, and result export options.
-        Using undetected ChromeDriver to minimize CAPTCHA interruptions, MIL Spot Bot streamlines the process of monitoring search rankings, 
-        saving time and effort for SEO professionals and businesses. 
-        The exported results can then be imported into SEMrush to calculate and track the site’s visibility score over time.
+        The MIL Spot Bot is an automated SEO spot-checking tool built with Python, Flask, and Selenium that helps users quickly determine whether a target website appears on the first or second page of Google search results for selected keyword and city combinations. Designed with a modern, user-friendly web interface, it supports multiple keyword and city inputs, real-time progress tracking with pause/resume functionality, and result export options. Using undetected ChromeDriver to minimize CAPTCHA interruptions, MIL Spot Bot streamlines the process of monitoring search rankings, saving time and effort for SEO professionals and businesses. The exported results can then be imported into SEMrush to calculate and track the site’s visibility score over time.
       </p>
       <div class="proj-tech">
         <span class="tech-pill">Python</span>
-        <span class="tech-pill">UI/UX</span>
-        <span class="tech-pill">Automation</span>
-        <span class="tech-pill">Chromium</span>
         <span class="tech-pill">SEO</span>
+        <span class="tech-pill">Headless Search</span>
+        <span class="tech-pill">Automation</span>
+        <span class="tech-pill">UI/UX</span>
       </div>
     </div>
   </div>
@@ -983,6 +1045,7 @@
         <button class="carousel-btn next" aria-label="Next">&#8594;</button>
         <div class="carousel-dots"></div>
         <div class="carousel-counter">1 / 4</div>
+        <div class="expand-hint">⤢ Click to expand</div>
       </div>
 
       <div class="proj-tag">IEEE · PCB Design · Ongoing</div>
@@ -1025,6 +1088,7 @@
         <button class="carousel-btn next" aria-label="Next">&#8594;</button>
         <div class="carousel-dots"></div>
         <div class="carousel-counter">1 / 4</div>
+        <div class="expand-hint">⤢ Click to expand</div>
       </div>
 
       <div class="proj-tag">IoT · Industrial AI</div>
@@ -1155,6 +1219,17 @@
     </div>
   </div>
 </section>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+  <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous">&#8592;</button>
+  <div class="lb-img-wrap">
+    <img id="lb-img" src="" alt="Project image expanded" />
+  </div>
+  <button class="lb-nav lb-next" id="lbNext" aria-label="Next">&#8594;</button>
+  <div class="lb-counter" id="lbCounter"></div>
+</div>
 
 <!-- FOOTER -->
 <footer>
@@ -1328,6 +1403,75 @@
 
     // Kick off auto-rotate
     resetAuto();
+  });
+  // ── LIGHTBOX ENGINE ──────────────────────────────────────────────
+  const lightbox   = document.getElementById('lightbox');
+  const lbImg      = document.getElementById('lb-img');
+  const lbClose    = document.getElementById('lbClose');
+  const lbPrev     = document.getElementById('lbPrev');
+  const lbNext     = document.getElementById('lbNext');
+  const lbCounter  = document.getElementById('lbCounter');
+
+  let lbImages = [];   // all img src values for the active carousel
+  let lbIndex  = 0;
+
+  function openLightbox(srcs, startIndex) {
+    lbImages = srcs.filter(s => s && s.trim() !== '');
+    if (!lbImages.length) return;
+    lbIndex = Math.min(startIndex, lbImages.length - 1);
+    showLbSlide();
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+    setTimeout(() => { lbImg.src = ''; }, 300);
+  }
+
+  function showLbSlide() {
+    lbImg.src = lbImages[lbIndex];
+    lbCounter.textContent = `${lbIndex + 1} / ${lbImages.length}`;
+    lbPrev.style.display = lbImages.length > 1 ? 'flex' : 'none';
+    lbNext.style.display = lbImages.length > 1 ? 'flex' : 'none';
+  }
+
+  lbClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+  lbPrev.addEventListener('click', e => {
+    e.stopPropagation();
+    lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length;
+    showLbSlide();
+  });
+  lbNext.addEventListener('click', e => {
+    e.stopPropagation();
+    lbIndex = (lbIndex + 1) % lbImages.length;
+    showLbSlide();
+  });
+
+  // Keyboard controls
+  document.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape')      closeLightbox();
+    if (e.key === 'ArrowLeft')  { lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; showLbSlide(); }
+    if (e.key === 'ArrowRight') { lbIndex = (lbIndex + 1) % lbImages.length; showLbSlide(); }
+  });
+
+  // Wire up every carousel slide to open the lightbox on click
+  document.querySelectorAll('[data-carousel]').forEach(carousel => {
+    carousel.addEventListener('click', e => {
+      // Don't trigger if clicking the prev/next buttons
+      if (e.target.closest('.carousel-btn')) return;
+      const slides = carousel.querySelectorAll('.carousel-slide img');
+      const srcs   = Array.from(slides).map(img => img.src).filter(s => !s.endsWith('/'));
+      const track  = carousel.querySelector('.carousel-track');
+      // Determine which slide is active from the transform value
+      const tx     = track.style.transform;
+      const match  = tx.match(/-(\d+(\.\d+)?)%/);
+      const active = match ? Math.round(parseFloat(match[1]) / 100) : 0;
+      openLightbox(srcs, active);
+    });
   });
   // ─────────────────────────────────────────────────────────────────
 
