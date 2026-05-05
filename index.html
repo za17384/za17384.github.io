@@ -110,6 +110,24 @@
   .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 10px; }
   .exp-bullets li { font-size: 13px; line-height: 1.6; color: var(--muted); padding-left: 16px; position: relative; }
   .exp-bullets li::before { content: "\2192"; position: absolute; left: 0; color: var(--accent); font-size: 11px; }
+  .exp-logo-slot {
+  width: 100%;
+  height: 56px;
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.exp-logo-slot img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
 
   /* PROJECTS */
   #projects { padding: 120px 48px; border-top: 1px solid var(--border); background: var(--bg2); }
@@ -345,8 +363,12 @@
     </div>
   </div>
   <div class="exp-grid">
+
     <div class="exp-card reveal">
       <div class="exp-num">01</div>
+      <div class="exp-logo-slot">
+        <img src="make-it-loud-logo.png" alt="Make It Loud Web" onerror="this.style.display='none'" />
+      </div>
       <div class="exp-role">IT &amp; Automation Intern</div>
       <div class="exp-company">Make It Loud Web &mdash; Buford, GA</div>
       <div class="exp-period">June 2025 &ndash; August 2025</div>
@@ -357,8 +379,12 @@
         <li>Reduced manual intervention by ~70% in long-running automation workflows</li>
       </ul>
     </div>
+
     <div class="exp-card reveal reveal-delay-1">
       <div class="exp-num">02</div>
+      <div class="exp-logo-slot">
+        <img src="ajanta-logo.png" alt="Ajanta Electrical Industries" onerror="this.style.display='none'" />
+      </div>
       <div class="exp-role">AI Development Intern</div>
       <div class="exp-company">Ajanta Electrical Industries &mdash; India</div>
       <div class="exp-period">June 2025</div>
@@ -369,8 +395,12 @@
         <li>Hands-on with LT control panels, assembly flow, and electrical blueprints</li>
       </ul>
     </div>
+
     <div class="exp-card reveal reveal-delay-2">
       <div class="exp-num">03</div>
+      <div class="exp-logo-slot">
+        <img src="vdart-logo.png" alt="VDart Inc." onerror="this.style.display='none'" />
+      </div>
       <div class="exp-role">AI Analyst Intern</div>
       <div class="exp-company">VDart Inc. &mdash; Alpharetta, GA</div>
       <div class="exp-period">August 2024 &ndash; May 2025</div>
@@ -381,6 +411,7 @@
         <li>Managed IT resources for clients valued at $1M+</li>
       </ul>
     </div>
+
   </div>
 </section>
 
