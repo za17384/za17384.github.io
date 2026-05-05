@@ -55,7 +55,7 @@
   .hero-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size: 48px 48px; opacity: 0.5; }
   .hero-accent-bar { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg,var(--accent),var(--accent2)); z-index: 3; }
   .hero-photo-wrap { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; overflow: hidden; }
-  .hero-photo { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; mask-image: linear-gradient(to bottom,black 55%,transparent 100%); -webkit-mask-image: linear-gradient(to bottom,black 55%,transparent 100%); }
+  .hero-photo { width: 100%; height: 100%; object-fit: contain; object-position: center top; display: block; mask-image: linear-gradient(to bottom,black 55%,transparent 100%); -webkit-mask-image: linear-gradient(to bottom,black 55%,transparent 100%); }
   .hero-photo-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; border: 2px dashed rgba(0,229,255,0.2); color: var(--muted); }
   .hero-photo-placeholder svg { opacity: 0.3; }
   .hero-photo-placeholder span { font-family: "Space Mono", monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.4; text-align: center; line-height: 1.8; }
@@ -130,7 +130,7 @@
   .proj-carousel { width: 100%; height: 220px; overflow: hidden; margin-bottom: 28px; position: relative; background: var(--bg3); border: 1px solid var(--border); }
   .carousel-track { display: flex; height: 100%; transition: transform 0.5s cubic-bezier(.4,0,.2,1); will-change: transform; }
   .carousel-slide { min-width: 100%; height: 100%; position: relative; flex-shrink: 0; cursor: zoom-in; }
-  .carousel-slide img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+  .carousel-slide img { width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; }
   .carousel-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; border: 2px dashed rgba(0,229,255,0.12); }
   .carousel-placeholder svg { opacity: 0.18; }
   .carousel-placeholder span { font-family: "Space Mono", monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); opacity: 0.35; text-align: center; line-height: 1.8; }
