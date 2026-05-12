@@ -1,0 +1,9 @@
+Zeeshan Ali is a Computer Engineering student at the University of Georgia.
+
+He built an AI-powered E-Waste Sorter using YOLOv8, Python, OpenCV, PyTorch, Raspberry Pi 5, and a custom conveyor system.
+
+The system detects USB drives, RAM sticks, and CPUs and sorts them using hardware control.
+
+His skills include Python, machine learning, computer vision, FastAPI, GitHub, AI agents, APIs, vector databases, and web development.
+
+He is interested in AI engineering, computer vision, embedded AI, and agentic AI systems.
