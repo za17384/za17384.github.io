@@ -1,10 +1,10 @@
 import os
+import requests
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from pinecone import Pinecone
-from sentence_transformers import SentenceTransformer
 from groq import Groq
 
 load_dotenv()
@@ -12,27 +12,30 @@ load_dotenv()
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
 PINECONE_INDEX_NAME = os.getenv("PINECONE_INDEX_NAME")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+HF_TOKEN = os.getenv("HF_TOKEN")
 
 if not PINECONE_API_KEY:
-    raise ValueError("Missing PINECONE_API_KEY in .env")
+    raise ValueError("Missing PINECONE_API_KEY")
 
 if not PINECONE_INDEX_NAME:
-    raise ValueError("Missing PINECONE_INDEX_NAME in .env")
+    raise ValueError("Missing PINECONE_INDEX_NAME")
 
 if not GROQ_API_KEY:
-    raise ValueError("Missing GROQ_API_KEY in .env")
+    raise ValueError("Missing GROQ_API_KEY")
 
-# Groq LLM client
-groq_client = Groq(api_key=GROQ_API_KEY)
+if not HF_TOKEN:
+    raise ValueError("Missing HF_TOKEN")
 
-# Embedding model
-embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+HF_EMBEDDING_URL = (
+    "https://router.huggingface.co/hf-inference/models/"
+    "sentence-transformers/all-MiniLM-L6-v2/pipeline/feature-extraction"
+)
 
-# Pinecone connection
 pc = Pinecone(api_key=PINECONE_API_KEY)
 index = pc.Index(PINECONE_INDEX_NAME)
 
-# FastAPI app
+groq_client = Groq(api_key=GROQ_API_KEY)
+
 app = FastAPI()
 
 app.add_middleware(
@@ -53,8 +56,42 @@ class ChatRequest(BaseModel):
     question: str
 
 
+def get_hf_embedding(text: str):
+    headers = {
+        "Authorization": f"Bearer {HF_TOKEN}",
+        "Content-Type": "application/json",
+    }
+
+    payload = {
+        "inputs": text,
+        "options": {
+            "wait_for_model": True
+        }
+    }
+
+    response = requests.post(
+        HF_EMBEDDING_URL,
+        headers=headers,
+        json=payload,
+        timeout=60
+    )
+
+    if response.status_code != 200:
+        raise Exception(f"Hugging Face embedding error: {response.text}")
+
+    embedding = response.json()
+
+    # Sometimes HF returns [[...]], sometimes [...]
+    if isinstance(embedding, list) and len(embedding) > 0:
+        if isinstance(embedding[0], list):
+            return embedding[0]
+        return embedding
+
+    raise Exception("Invalid embedding returned from Hugging Face")
+
+
 def search_context(question, top_k=1):
-    question_embedding = embedding_model.encode(question).tolist()
+    question_embedding = get_hf_embedding(question)
 
     results = index.query(
         vector=question_embedding,
@@ -73,9 +110,7 @@ def search_context(question, top_k=1):
 
 @app.get("/")
 def home():
-    return {
-        "message": "Pinecone + Groq chatbot backend is running."
-    }
+    return {"status": "Chatbot backend is running!"}
 
 
 @app.post("/chat")
@@ -107,10 +142,7 @@ Question:
         response = groq_client.chat.completions.create(
             model="llama-3.1-8b-instant",
             messages=[
-                {
-                    "role": "user",
-                    "content": prompt
-                }
+                {"role": "user", "content": prompt}
             ],
             temperature=0.3,
             max_tokens=300
@@ -122,6 +154,4 @@ Question:
 
     except Exception as e:
         print("ERROR:", str(e))
-        return {
-            "answer": f"Backend error: {str(e)}"
-        }
+        return {"answer": f"Backend error: {str(e)}"}
