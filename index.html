@@ -399,24 +399,27 @@
     addMessage("Thinking...", "bot-message", "loading-message");
 
     try {
-      const response = await fetch(BACKEND_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ question })
-      });
+  const response = await fetch(BACKEND_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ question })
+  });
 
-      const data = await response.json();
-
-      removeLoadingMessage();
-      addMessage(data.answer || "Sorry, I could not answer that.", "bot-message");
-
-    } catch (error) {
-      removeLoadingMessage();
-      addMessage("Backend is not connected yet. Please try again later.", "bot-message");
-    }
+  if (!response.ok) {
+    throw new Error("HTTP error " + response.status);
   }
+
+  const data = await response.json();
+
+  removeLoadingMessage();
+  addMessage(data.answer || "Sorry, I could not answer that.", "bot-message");
+
+} catch (error) {
+  removeLoadingMessage();
+  addMessage("Backend error: " + error.message, "bot-message");
+}
 
   function addMessage(text, className, id = "") {
     const msg = document.createElement("div");
