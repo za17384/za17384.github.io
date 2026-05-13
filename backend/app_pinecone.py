@@ -90,7 +90,7 @@ def get_hf_embedding(text: str):
     raise Exception("Invalid embedding returned from Hugging Face")
 
 
-def search_context(question, top_k=1):
+def search_context(question, top_k=5):
     question_embedding = get_hf_embedding(question)
 
     results = index.query(
