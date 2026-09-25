@@ -1,12 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="current">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Zeeshan Ali | Computer Engineer</title>
+<script>
+(function () {
+  try {
+    var saved = localStorage.getItem("theme");
+    var theme = saved === "quest" || saved === "current" ? saved : "current";
+    document.documentElement.setAttribute("data-theme", theme);
+  } catch (e) {
+    document.documentElement.setAttribute("data-theme", "current");
+  }
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
 
 <style>
   :root {
@@ -31,14 +43,20 @@
   /* NAV */
   nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 24px 48px; backdrop-filter: blur(12px); background: rgba(10,10,10,0.6); border-bottom: 1px solid var(--border); gap: 24px; }
   .nav-logo { font-family: "Bebas Neue", sans-serif; font-size: 24px; letter-spacing: 0.12em; color: var(--accent); text-decoration: none; }
-  .nav-links { display: flex; gap: 32px; list-style: none; }
-  .nav-links a { font-family: "Space Mono", monospace; font-size: 13px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .za-rotator { display: none; }
+  .nav-links { display: flex; gap: 16px; list-style: none; min-width: 0; }
+  .nav-links a { font-family: "Space Mono", monospace; font-size: 13px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; white-space: nowrap; }
   .nav-links a:hover { color: var(--accent); }
   .nav-right { display: flex; align-items: center; gap: 12px; }
   .nav-cta, .nav-chat-btn { font-family: "Space Mono", monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--bg); background: var(--accent); padding: 10px 22px; border: none; cursor: pointer; text-decoration: none; transition: opacity 0.2s, transform 0.2s; }
   .nav-cta:hover, .nav-chat-btn:hover { opacity: 0.85; transform: translateY(-1px); }
   .nav-chat-btn { background: transparent; color: var(--text); border: 1px solid var(--accent); display: inline-flex; align-items: center; gap: 8px; }
   .nav-chat-btn:hover { background: var(--accent); color: var(--bg); }
+  .theme-switch { font-family: "Press Start 2P", "Courier New", monospace; font-size: 8px; letter-spacing: 0.06em; text-transform: uppercase; color: #14121c; background: #ffd23f; border: 3px solid #14121c; padding: 10px 12px; cursor: pointer; white-space: nowrap; border-radius: 0; box-shadow: 4px 4px 0 #0a0810; }
+  .theme-switch:hover { background: #ffd23f; color: #14121c; transform: translateY(-2px); box-shadow: 4px 6px 0 #0a0810; }
+  .theme-switch:active { transform: translate(4px, 4px); box-shadow: 0 0 0 0 #0a0810; }
+  .theme-switch:focus-visible { outline: 3px dashed #ffd23f; outline-offset: 4px; }
+  .hero__bg, .hero__clouds, .quest-scanlines { display: none; }
 
   /* HERO */
   #hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; padding: 0; position: relative; overflow: hidden; }
@@ -59,10 +77,12 @@
   .hero-accent-bar { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg,var(--accent),var(--accent2)); z-index: 3; }
   .hero-photo-wrap { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; overflow: hidden; }
   .hero-photo { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; mask-image: linear-gradient(to bottom,black 55%,transparent 100%); -webkit-mask-image: linear-gradient(to bottom,black 55%,transparent 100%); }
+  .hero-photo--pixel, .uga-pixel { display: none; }
+  .exp-logo-slot img.logo-pixel { display: none; }
   .hero-photo-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; border: 2px dashed rgba(0,229,255,0.2); color: var(--muted); }
   .hero-photo-placeholder svg { opacity: 0.3; }
   .hero-photo-placeholder span { font-family: "Space Mono", monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.4; text-align: center; line-height: 1.8; }
-  .hero-stat-stack { position: absolute; bottom: 48px; left: 48px; display: flex; flex-direction: column; gap: 20px; z-index: 2; }
+  .hero-stat-stack { position: absolute; bottom: 48px; left: calc(50% + 48px); display: flex; flex-direction: column; gap: 20px; z-index: 2; }
   .hero-stat { display: flex; flex-direction: column; }
   .hero-stat-num { font-family: "Bebas Neue", sans-serif; font-size: 42px; color: var(--accent); line-height: 1; }
   .hero-stat-label { font-family: "Space Mono", monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
@@ -102,6 +122,13 @@
   #experience { padding: 120px 48px; border-top: 1px solid var(--border); }
   .exp-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 80px; }
   .exp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
+  @media (min-width: 901px) {
+    .exp-grid .exp-card:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+      width: calc((100% - 1px) / 2);
+      justify-self: center;
+    }
+  }
   .exp-card { background: var(--bg); padding: 48px 40px; position: relative; overflow: hidden; transition: background 0.3s; }
   .exp-card:hover { background: var(--bg3); }
   .exp-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
@@ -115,8 +142,9 @@
   .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 12px; }
   .exp-bullets li { font-size: 0.95rem; line-height: 1.6; color: var(--muted); padding-left: 18px; position: relative; }
   .exp-bullets li::before { content: "\2192"; position: absolute; left: 0; color: var(--accent); font-size: 13px; }
-  .exp-logo-slot {width: 100%; height: 100px; margin-bottom: 24px; border: 1px solid var(--border); background: var(--bg3); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  .exp-logo-slot img {max-width: 85%; max-height: 80%; width: auto; height: auto;object-fit: contain; }
+  .exp-logo-slot {width: 100%; aspect-ratio: 1600 / 523; height: auto; margin-bottom: 20px; border: 1px solid var(--border); background: var(--bg3); display: block; position: relative; overflow: hidden; }
+  .exp-logo-slot img {position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; object-fit: cover; object-position: center; display: block; }
+  .exp-logo-slot .exp-badge { position: absolute; top: 0; left: 0; z-index: 2; margin: 0; }
 
   /* PROJECTS */
   #projects { padding: 120px 48px; border-top: 1px solid var(--border); background: var(--bg2); }
@@ -250,10 +278,1297 @@
     .mobile-gallery-btn { display: flex; }
     cursor: auto;
     * { cursor: auto !important; }
+    .theme-switch { padding: 8px 10px; }
+  }
+</style>
+<style id="quest-theme">
+  html[data-theme="quest"] {
+    --kq-ink: #14121c;
+    --kq-bg: #1a2436;
+    --kq-sky: #3ba7e8;
+    --kq-sky-deep: #1f6fb2;
+    --kq-sky-pale: #8ad4f7;
+    --kq-green: #2eb34a;
+    --kq-green-deep: #1d7c33;
+    --kq-red: #d92e33;
+    --kq-yellow: #ffd23f;
+    --kq-white: #fdf3dc;
+    --kq-muted: #5b6480;
+    --kq-correct: #5fd66f;
+    --kq-shadow: #0a0810;
+    --kq-border: 3px;
+    --kq-drop: 4px;
+    --kq-font-pixel: "Press Start 2P", "Courier New", monospace;
+    --kq-font-body: "VT323", "Courier New", monospace;
+    --radius: 0;
+    --bg: var(--kq-bg);
+    --bg2: var(--kq-bg);
+    --bg3: var(--kq-ink);
+    --accent: var(--kq-yellow);
+    --accent2: var(--kq-red);
+    --text: var(--kq-white);
+    --muted: var(--kq-sky-pale);
+    --border: var(--kq-ink);
+    font-size: 22px;
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: unset;
+  }
+
+  html[data-theme="quest"] *,
+  html[data-theme="quest"] *::before,
+  html[data-theme="quest"] *::after {
+    border-radius: 0 !important;
+  }
+
+  html[data-theme="quest"] body {
+    background: var(--kq-bg);
+    color: var(--kq-white);
+    font-family: var(--kq-font-body);
+    font-size: 22px;
+    line-height: 1.35;
+    cursor: auto;
+    -webkit-font-smoothing: none;
+  }
+
+  html[data-theme="quest"] ::selection {
+    background: var(--kq-yellow);
+    color: var(--kq-ink);
+  }
+
+  html[data-theme="quest"] :focus {
+    outline: none;
+  }
+
+  html[data-theme="quest"] :focus-visible {
+    outline: 3px dashed var(--kq-yellow);
+    outline-offset: 3px;
+  }
+
+  html[data-theme="quest"] .cursor,
+  html[data-theme="quest"] .cursor-ring {
+    display: none !important;
+  }
+
+  html[data-theme="quest"] img,
+  html[data-theme="quest"] .hero__ground,
+  html[data-theme="quest"] .hero__stars,
+  html[data-theme="quest"] .kq-cloud {
+    image-rendering: pixelated;
+  }
+
+  html[data-theme="quest"] h1,
+  html[data-theme="quest"] h2,
+  html[data-theme="quest"] h3,
+  html[data-theme="quest"] .nav-logo,
+  html[data-theme="quest"] .section-heading,
+  html[data-theme="quest"] .section-tag,
+  html[data-theme="quest"] .hero-fname,
+  html[data-theme="quest"] .hero-lname,
+  html[data-theme="quest"] .hero-tag,
+  html[data-theme="quest"] .contact-heading,
+  html[data-theme="quest"] .footer-logo,
+  html[data-theme="quest"] .stat-big,
+  html[data-theme="quest"] .hero-stat-num,
+  html[data-theme="quest"] .exp-role,
+  html[data-theme="quest"] .proj-title,
+  html[data-theme="quest"] .marquee-item {
+    font-family: var(--kq-font-pixel);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0;
+  }
+
+  html[data-theme="quest"] .section-heading,
+  html[data-theme="quest"] .contact-heading,
+  html[data-theme="quest"] .hero-fname,
+  html[data-theme="quest"] .hero-lname {
+    font-size: 34px;
+    line-height: 1.6;
+  }
+
+  html[data-theme="quest"] .section-heading,
+  html[data-theme="quest"] .contact-heading {
+    font-size: 56px;
+    line-height: calc(1em + 26px);
+    text-align: left;
+  }
+
+  html[data-theme="quest"] .section-tag { text-align: left; }
+
+  html[data-theme="quest"] .proj-title { font-size: 20px; line-height: 1.6; }
+  html[data-theme="quest"] .exp-role { font-size: 14px; line-height: 1.7; }
+  html[data-theme="quest"] .stat-big,
+  html[data-theme="quest"] .hero-stat-num { font-size: 20px; line-height: 1.4; color: var(--kq-yellow); }
+  html[data-theme="quest"] .stat-big { color: var(--kq-green); font-size: 26px; }
+  html[data-theme="quest"] .stat-cell { align-items: center; text-align: center; }
+  html[data-theme="quest"] .stat-desc { text-align: center; }
+  html[data-theme="quest"] .nav-logo { font-size: 12px; color: var(--kq-yellow); text-shadow: none; flex-shrink: 0; perspective: 480px; }
+  html[data-theme="quest"] .nav-logo-mark { display: none; }
+  html[data-theme="quest"] .za-rotator {
+    display: grid;
+    place-items: center;
+    width: max-content;
+    max-width: min(560px, 46vw);
+    height: auto;
+    padding: 4px 12px;
+    background: var(--kq-red);
+    color: #fff;
+    border: var(--kq-border) solid var(--kq-ink);
+    box-shadow: var(--kq-drop) var(--kq-drop) 0 var(--kq-shadow);
+    overflow: hidden;
+    transform: rotateX(0deg);
+    transform-origin: center center;
+    transition: transform 180ms ease-in;
+  }
+  html[data-theme="quest"] .za-rotator.is-out { transform: rotateX(-90deg); }
+  html[data-theme="quest"] .za-rotator.is-in {
+    transform: rotateX(90deg);
+    transition: none;
+  }
+  html[data-theme="quest"] .za-rotator-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+  }
+  html[data-theme="quest"] .za-rotator-face {
+    display: block;
+    font-family: var(--kq-font-body);
+    font-size: 18px;
+    line-height: 1;
+    letter-spacing: 0;
+    text-transform: none;
+    text-shadow: none;
+    text-align: center;
+    color: #fff;
+    white-space: nowrap;
+  }
+  html[data-theme="quest"] .footer-logo { font-size: 11px; color: var(--kq-yellow); }
+
+  html[data-theme="quest"] p,
+  html[data-theme="quest"] li,
+  html[data-theme="quest"] .about-body,
+  html[data-theme="quest"] .hero-desc,
+  html[data-theme="quest"] .proj-desc,
+  html[data-theme="quest"] .skills-intro,
+  html[data-theme="quest"] .resume-desc,
+  html[data-theme="quest"] .contact-sub,
+  html[data-theme="quest"] .about-info-value,
+  html[data-theme="quest"] .about-info-sub,
+  html[data-theme="quest"] .stat-desc,
+  html[data-theme="quest"] .contact-link-val,
+  html[data-theme="quest"] .exp-company {
+    font-family: var(--kq-font-body);
+    font-size: 22px;
+    line-height: 1.35;
+    text-transform: none;
+  }
+
+  html[data-theme="quest"] a {
+    color: var(--kq-sky-pale);
+    text-decoration: none;
+  }
+
+  html[data-theme="quest"] nav {
+    background: var(--kq-ink);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom: var(--kq-border) solid var(--kq-yellow);
+    box-shadow: none;
+    z-index: 4500;
+    flex-wrap: wrap;
+    row-gap: 10px;
+    padding: 14px 20px;
+  }
+
+  html[data-theme="quest"] .nav-links {
+    flex: 1 1 200px;
+    min-width: 0;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    justify-content: flex-end;
+  }
+
+  html[data-theme="quest"] .nav-right { flex-shrink: 0; }
+
+  html[data-theme="quest"] .nav-links a {
+    font-family: var(--kq-font-pixel);
+    font-size: 8px;
+    letter-spacing: 0;
+    color: var(--kq-white);
+    background: transparent;
+    padding: 6px 2px;
+    border: var(--kq-border) solid transparent;
+    white-space: nowrap;
+  }
+
+  html[data-theme="quest"] .nav-links a:hover {
+    background: var(--kq-white);
+    color: var(--kq-ink);
+    border-color: var(--kq-ink);
+  }
+
+  html[data-theme="quest"] .btn,
+  html[data-theme="quest"] .btn-primary,
+  html[data-theme="quest"] .btn-ghost,
+  html[data-theme="quest"] .nav-cta,
+  html[data-theme="quest"] .nav-chat-btn {
+    display: inline-block;
+    margin: 0;
+    padding: 14px 20px;
+    border: var(--kq-border) solid var(--kq-ink);
+    background: var(--kq-white);
+    color: var(--kq-ink);
+    font-family: var(--kq-font-pixel);
+    font-size: 12px;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 0;
+    box-shadow: var(--kq-drop) var(--kq-drop) 0 0 var(--kq-shadow);
+    transition: transform 60ms steps(2, end), box-shadow 60ms steps(2, end), background 60ms steps(2, end), color 60ms steps(2, end);
+  }
+
+  html[data-theme="quest"] .btn:hover,
+  html[data-theme="quest"] .btn-primary:hover,
+  html[data-theme="quest"] .btn-ghost:hover,
+  html[data-theme="quest"] .nav-cta:hover,
+  html[data-theme="quest"] .nav-chat-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--kq-drop) 6px 0 0 var(--kq-shadow);
+    opacity: 1;
+  }
+
+  html[data-theme="quest"] .btn:active,
+  html[data-theme="quest"] .btn-primary:active,
+  html[data-theme="quest"] .btn-ghost:active,
+  html[data-theme="quest"] .nav-cta:active,
+  html[data-theme="quest"] .nav-chat-btn:active {
+    transform: translate(var(--kq-drop), var(--kq-drop));
+    box-shadow: 0 0 0 0 var(--kq-shadow);
+  }
+
+  html[data-theme="quest"] .btn:focus-visible,
+  html[data-theme="quest"] .btn-primary:focus-visible,
+  html[data-theme="quest"] .btn-ghost:focus-visible,
+  html[data-theme="quest"] .nav-cta:focus-visible,
+  html[data-theme="quest"] .nav-chat-btn:focus-visible {
+    outline: 3px dashed var(--kq-yellow);
+    outline-offset: 4px;
+  }
+
+  html[data-theme="quest"] .btn-primary,
+  html[data-theme="quest"] #chat-send {
+    background: var(--kq-green);
+    color: var(--kq-white);
+  }
+
+  html[data-theme="quest"] .nav-cta {
+    background: var(--kq-red);
+    color: var(--kq-white);
+  }
+
+  html[data-theme="quest"] .btn-ghost,
+  html[data-theme="quest"] .nav-chat-btn {
+    background: transparent;
+    color: var(--kq-white);
+  }
+
+  html[data-theme="quest"] .btn-ghost:hover,
+  html[data-theme="quest"] .nav-chat-btn:hover {
+    background: var(--kq-white);
+    color: var(--kq-ink);
+  }
+
+  html[data-theme="quest"] #resume .btn-ghost {
+    color: var(--kq-ink);
+    background: var(--kq-white);
+  }
+
+  html[data-theme="quest"] #resume .btn-ghost:hover {
+    background: var(--kq-yellow);
+    color: var(--kq-ink);
+  }
+
+  html[data-theme="quest"] .theme-switch,
+  html[data-theme="quest"] .theme-switch[aria-pressed="true"] {
+    background: transparent;
+    color: var(--kq-white);
+    border: 0;
+    box-shadow: none;
+    transform: none;
+    font-family: "Space Mono", monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+    padding: 10px 4px;
+    text-transform: uppercase;
+  }
+
+  html[data-theme="quest"] .theme-switch:hover,
+  html[data-theme="quest"] .theme-switch[aria-pressed="true"]:hover {
+    background: transparent;
+    color: var(--kq-yellow);
+    border: 0;
+    box-shadow: none;
+    transform: none;
+    opacity: 1;
+  }
+
+  html[data-theme="quest"] .theme-switch:active {
+    background: transparent;
+    box-shadow: none;
+    transform: none;
+  }
+
+  html[data-theme="quest"] .theme-switch:focus-visible {
+    outline: 2px solid var(--kq-yellow);
+    outline-offset: 3px;
+  }
+
+  html[data-theme="quest"] button:disabled {
+    background: var(--kq-muted);
+    color: var(--kq-ink);
+    box-shadow: none;
+    transform: none;
+    cursor: not-allowed;
+  }
+
+  html[data-theme="quest"] .nav-cta,
+  html[data-theme="quest"] .nav-chat-btn {
+    padding: 10px 12px;
+    font-size: 8px;
+    white-space: nowrap;
+  }
+
+  html[data-theme="quest"] .nav-chat-btn {
+    font-size: 0;
+    gap: 0;
+  }
+
+  html[data-theme="quest"] .nav-chat-btn::after {
+    content: "CHAT";
+    font-size: 8px;
+    letter-spacing: 0.06em;
+  }
+
+  html[data-theme="quest"] #hero {
+    background: var(--kq-sky-deep);
+  }
+
+  html[data-theme="quest"] .hero__bg {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    background-color: var(--kq-sky-deep);
+    pointer-events: none;
+  }
+
+  html[data-theme="quest"] .hero__streaks {
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      rgba(138, 212, 247, 0.35) 0,
+      rgba(138, 212, 247, 0.35) 6px,
+      rgba(0, 0, 0, 0) 6px,
+      rgba(0, 0, 0, 0) 30px
+    );
+    animation: kq-streaks 6s linear infinite;
+  }
+
+  html[data-theme="quest"] .hero__stars {
+    position: absolute;
+    top: 16%;
+    left: 24px;
+    width: 4px;
+    height: 4px;
+    background: var(--kq-white);
+    box-shadow:
+      120px 18px 0 0 var(--kq-white),
+      260px 72px 0 0 var(--kq-white),
+      410px 28px 0 0 var(--kq-white),
+      560px 110px 0 0 var(--kq-white),
+      720px 40px 0 0 var(--kq-white),
+      880px 96px 0 0 var(--kq-white),
+      1040px 22px 0 0 var(--kq-white),
+      1200px 128px 0 0 var(--kq-white),
+      1360px 48px 0 0 var(--kq-white),
+      1520px 84px 0 0 var(--kq-white),
+      1680px 16px 0 0 var(--kq-white),
+      1840px 108px 0 0 var(--kq-white),
+      2000px 36px 0 0 var(--kq-white),
+      2160px 90px 0 0 var(--kq-white),
+      2320px 54px 0 0 var(--kq-white),
+      180px 150px 0 0 var(--kq-white),
+      640px 168px 0 0 var(--kq-white),
+      1100px 156px 0 0 var(--kq-white),
+      1560px 174px 0 0 var(--kq-white),
+      2020px 148px 0 0 var(--kq-white);
+    animation: kq-drift 24s linear infinite;
+  }
+
+  html[data-theme="quest"] .hero__stars--slow {
+    top: 38%;
+    left: 80px;
+    opacity: 0.6;
+    animation-duration: 48s;
+    box-shadow:
+      90px 30px 0 0 var(--kq-white),
+      340px 80px 0 0 var(--kq-white),
+      590px 20px 0 0 var(--kq-white),
+      830px 100px 0 0 var(--kq-white),
+      1080px 44px 0 0 var(--kq-white),
+      1320px 86px 0 0 var(--kq-white),
+      1580px 18px 0 0 var(--kq-white),
+      1820px 70px 0 0 var(--kq-white),
+      2060px 36px 0 0 var(--kq-white),
+      2300px 96px 0 0 var(--kq-white),
+      470px 140px 0 0 var(--kq-white),
+      960px 150px 0 0 var(--kq-white),
+      1460px 132px 0 0 var(--kq-white),
+      1960px 158px 0 0 var(--kq-white);
+  }
+
+  html[data-theme="quest"] .hero__ground {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 90px;
+    background-color: var(--kq-green);
+    border-top: 6px solid var(--kq-ink);
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--kq-green-deep) 0,
+      var(--kq-green-deep) 8px,
+      rgba(0, 0, 0, 0) 8px,
+      rgba(0, 0, 0, 0) 28px
+    );
+    z-index: 1;
+  }
+
+  html[data-theme="quest"] .hero__clouds {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  html[data-theme="quest"] #hero { grid-template-columns: 1fr 1fr; }
+
+  html[data-theme="quest"] .hero-left {
+    z-index: 4;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 240px;
+  }
+
+  html[data-theme="quest"] .hero-right {
+    position: relative;
+    background: transparent;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  html[data-theme="quest"] .hero-grid-bg,
+  html[data-theme="quest"] .hero-accent-bar,
+  html[data-theme="quest"] .hero-photo-placeholder {
+    display: none;
+  }
+
+  html[data-theme="quest"] .hero-name-block {
+    overflow: visible;
+    margin-bottom: 6px;
+  }
+
+  html[data-theme="quest"] .hero-name-block:has(.hero-lname) {
+    transform: scale(1.06);
+    transform-origin: center top;
+    margin-bottom: 16px;
+  }
+
+  html[data-theme="quest"] .hero-fname,
+  html[data-theme="quest"] .hero-lname,
+  html[data-theme="quest"] .hero-desc,
+  html[data-theme="quest"] .hero-actions,
+  html[data-theme="quest"] .reveal {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  html[data-theme="quest"] .hero-fname,
+  html[data-theme="quest"] .hero-lname {
+    font-size: 56px;
+    line-height: 1.05;
+    animation: kq-name-bounce 2.2s steps(6, end) infinite;
+  }
+
+  html[data-theme="quest"] .hero-fname {
+    color: var(--kq-yellow);
+    -webkit-text-stroke: 0;
+    text-shadow:
+      0.12em 0 0 var(--kq-ink), -0.12em 0 0 var(--kq-ink),
+      0 0.12em 0 var(--kq-ink), 0 -0.12em 0 var(--kq-ink),
+      0.24em 0.24em 0 var(--kq-red),
+      0.35em 0.35em 0 var(--kq-ink);
+  }
+
+  html[data-theme="quest"] .hero-lname {
+    color: var(--kq-white);
+    -webkit-text-stroke: 0;
+    text-shadow:
+      0.12em 0 0 var(--kq-ink), -0.12em 0 0 var(--kq-ink),
+      0 0.12em 0 var(--kq-ink), 0 -0.12em 0 var(--kq-ink),
+      0.24em 0.24em 0 var(--kq-sky),
+      0.35em 0.35em 0 var(--kq-ink);
+  }
+
+  html[data-theme="quest"] .hero-tag {
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 100%;
+    font-family: var(--kq-font-pixel);
+    font-size: 11px;
+    line-height: 2;
+    letter-spacing: 0.24em;
+    color: var(--kq-white);
+    text-align: center;
+    margin-bottom: 14px;
+    text-shadow:
+      2px 0 0 var(--kq-ink), -2px 0 0 var(--kq-ink),
+      0 2px 0 var(--kq-ink), 0 -2px 0 var(--kq-ink),
+      3px 3px 0 var(--kq-ink);
+  }
+
+  html[data-theme="quest"] .hero-tag::before {
+    width: 24px;
+    height: 3px;
+    background: var(--kq-yellow);
+  }
+
+  html[data-theme="quest"] .hero-desc {
+    color: var(--kq-white);
+    max-width: 18em;
+    text-align: center;
+    text-shadow:
+      2px 0 0 var(--kq-ink), -2px 0 0 var(--kq-ink),
+      0 2px 0 var(--kq-ink), 0 -2px 0 var(--kq-ink),
+      2px 2px 0 var(--kq-ink);
+  }
+
+  html[data-theme="quest"] .hero-actions {
+    position: relative;
+    z-index: 2;
+    flex-direction: column;
+    align-items: stretch;
+    width: min(320px, 100%);
+    gap: 14px;
+    background: var(--kq-sky-deep);
+  }
+
+  html[data-theme="quest"] .hero-actions .btn-primary,
+  html[data-theme="quest"] .hero-actions .btn-ghost {
+    width: 100%;
+  }
+
+  html[data-theme="quest"] .hero-photo--live { display: none; }
+
+  html[data-theme="quest"] .hero-photo-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  html[data-theme="quest"] .hero-photo--pixel {
+    display: block;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 18%;
+    mask-image: none;
+    -webkit-mask-image: none;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    cursor: zoom-in;
+    pointer-events: auto;
+  }
+
+  html[data-theme="quest"] .logo-live { display: none; }
+
+  html[data-theme="quest"] .exp-logo-slot img.logo-pixel {
+    position: relative;
+    inset: auto;
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    max-height: none;
+    object-fit: contain;
+    object-position: center;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+
+  html[data-theme="quest"] .exp-logo-slot {
+    height: auto;
+    aspect-ratio: auto;
+    padding: 0;
+    background: var(--kq-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  html[data-theme="quest"] .uga-pixel {
+    display: block;
+    width: 72px;
+    height: auto;
+    flex: 0 0 auto;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+
+  html[data-theme="quest"] .hero-stat-stack {
+    position: absolute;
+    left: 32px;
+    right: 32px;
+    bottom: 108px;
+    z-index: 6;
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    gap: 16px;
+    width: auto;
+    pointer-events: auto;
+  }
+
+  html[data-theme="quest"] .hero-stat {
+    flex: 1;
+    align-items: center;
+    text-align: center;
+    background: var(--kq-ink);
+    border: var(--kq-border) solid var(--kq-yellow);
+    box-shadow: var(--kq-drop) var(--kq-drop) 0 0 var(--kq-shadow);
+    padding: 16px 12px;
+  }
+
+  html[data-theme="quest"] .hero-stat-num {
+    font-size: 36px;
+    line-height: 1.35;
+    color: var(--kq-yellow);
+  }
+
+  html[data-theme="quest"] .hero-stat-label {
+    font-family: var(--kq-font-pixel);
+    font-size: 11px;
+    line-height: 1.7;
+    letter-spacing: 0.04em;
+    color: var(--kq-white);
+    text-shadow: none;
+  }
+
+  html[data-theme="quest"] .scroll-text {
+    font-family: var(--kq-font-pixel);
+    font-size: 8px;
+    color: var(--kq-white);
+    text-shadow: 2px 2px 0 var(--kq-ink);
+  }
+
+  html[data-theme="quest"] .scroll-line {
+    width: 3px;
+    background: var(--kq-yellow);
+    animation: none;
+  }
+
+  html[data-theme="quest"] .kq-cloud-drift {
+    position: absolute;
+    left: 0;
+    animation: kq-cloud-drift 36s linear infinite;
+    pointer-events: none;
+  }
+
+  html[data-theme="quest"] .kq-cloud-size { pointer-events: none; }
+  html[data-theme="quest"] .kq-cloud-size--sm { transform: scale(0.7); transform-origin: top left; }
+  html[data-theme="quest"] .kq-cloud-size--lg { transform: scale(1.25); transform-origin: top left; }
+
+  html[data-theme="quest"] .kq-cloud {
+    position: relative;
+    display: block;
+    width: 120px;
+    height: 28px;
+    padding: 0;
+    background: var(--kq-white);
+    border: var(--kq-border) solid var(--kq-ink);
+    cursor: pointer;
+    pointer-events: auto;
+    box-shadow: none;
+  }
+
+  html[data-theme="quest"] .kq-cloud::before,
+  html[data-theme="quest"] .kq-cloud::after {
+    content: "";
+    position: absolute;
+    background: var(--kq-white);
+    border: var(--kq-border) solid var(--kq-ink);
+  }
+
+  html[data-theme="quest"] .kq-cloud::before {
+    width: 56px;
+    height: 26px;
+    top: -26px;
+    left: 16px;
+    border-bottom: 0;
+  }
+
+  html[data-theme="quest"] .kq-cloud::after {
+    width: 32px;
+    height: 20px;
+    top: -20px;
+    left: 76px;
+    border-bottom: 0;
+  }
+
+  html[data-theme="quest"] .kq-cloud,
+  html[data-theme="quest"] .kq-cloud:hover,
+  html[data-theme="quest"] .kq-cloud:focus,
+  html[data-theme="quest"] .kq-cloud:focus-visible,
+  html[data-theme="quest"] .kq-cloud:active {
+    outline: none;
+    box-shadow: none;
+  }
+
+  html[data-theme="quest"] .kq-cloud.is-popping,
+  html[data-theme="quest"] .kq-cloud.is-popping:hover {
+    animation: kq-cloud-pop 120ms linear forwards;
+    outline: none;
+    pointer-events: none;
+  }
+
+  html[data-theme="quest"] .kq-puff {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: var(--kq-white);
+    border: 2px solid var(--kq-ink);
+    z-index: 7;
+    pointer-events: none;
+    animation: kq-puff 400ms steps(4, end) forwards;
+  }
+
+  html[data-theme="quest"] body:not(.quest-no-scanlines) .quest-scanlines {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 4000;
+    pointer-events: none;
+    background-image:
+      radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.5) 100%),
+      repeating-linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0) 0,
+        rgba(0, 0, 0, 0) 1px,
+        rgba(0, 0, 0, 0.3) 1px,
+        rgba(0, 0, 0, 0.3) 2px
+      );
+  }
+
+  html[data-theme="quest"] #about,
+  html[data-theme="quest"] #experience,
+  html[data-theme="quest"] #projects,
+  html[data-theme="quest"] #skills,
+  html[data-theme="quest"] #resume,
+  html[data-theme="quest"] #contact,
+  html[data-theme="quest"] .stats-band,
+  html[data-theme="quest"] footer {
+    background: var(--kq-bg);
+    border-top: var(--kq-border) solid var(--kq-white);
+  }
+
+  html[data-theme="quest"] #projects { background: var(--kq-bg); }
+  html[data-theme="quest"] #resume { background: var(--kq-white); color: var(--kq-ink); }
+  html[data-theme="quest"] #resume .section-heading,
+  html[data-theme="quest"] #resume .resume-desc { color: var(--kq-ink); text-shadow: none; }
+  html[data-theme="quest"] #resume .section-tag { color: var(--kq-ink); }
+
+  html[data-theme="quest"] .about-left,
+  html[data-theme="quest"] .about-right { border-color: var(--kq-muted); }
+  html[data-theme="quest"] .about-left { border-right: var(--kq-border) solid var(--kq-muted); }
+
+  html[data-theme="quest"] .section-tag,
+  html[data-theme="quest"] .about-info-label,
+  html[data-theme="quest"] .skill-cat-title,
+  html[data-theme="quest"] .proj-tag,
+  html[data-theme="quest"] .contact-link-label,
+  html[data-theme="quest"] .exp-num,
+  html[data-theme="quest"] .exp-period,
+  html[data-theme="quest"] .footer-copy,
+  html[data-theme="quest"] .footer-top {
+    font-family: var(--kq-font-pixel);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--kq-yellow);
+  }
+
+  html[data-theme="quest"] .section-tag {
+    display: inline-block;
+    padding-bottom: 8px;
+    border-bottom: var(--kq-border) solid var(--kq-ink);
+    margin-bottom: 16px;
+  }
+
+  html[data-theme="quest"] #resume .section-tag { border-bottom-color: var(--kq-ink); }
+
+  html[data-theme="quest"] .about-info-row {
+    border-bottom: var(--kq-border) solid var(--kq-muted);
+  }
+
+  html[data-theme="quest"] .about-body,
+  html[data-theme="quest"] .about-body strong,
+  html[data-theme="quest"] .about-info-value,
+  html[data-theme="quest"] .skills-intro,
+  html[data-theme="quest"] .contact-sub,
+  html[data-theme="quest"] .exp-bullets li {
+    color: var(--kq-white);
+  }
+
+  html[data-theme="quest"] .about-info-sub,
+  html[data-theme="quest"] .exp-company { color: var(--kq-sky-pale); }
+
+  html[data-theme="quest"] .exp-grid,
+  html[data-theme="quest"] .proj-large {
+    background: transparent;
+    gap: 20px;
+  }
+
+  @media (min-width: 901px) {
+    html[data-theme="quest"] .exp-grid .exp-card:last-child:nth-child(odd) {
+      width: calc((100% - 20px) / 2);
+    }
+  }
+
+  html[data-theme="quest"] .exp-card,
+  html[data-theme="quest"] .proj-card,
+  html[data-theme="quest"] .stat-cell,
+  html[data-theme="quest"] .resume-preview,
+  html[data-theme="quest"] .exp-logo-slot,
+  html[data-theme="quest"] .proj-carousel {
+    background: var(--kq-white);
+    color: var(--kq-ink);
+    border: var(--kq-border) solid var(--kq-ink);
+    box-shadow: var(--kq-drop) var(--kq-drop) 0 0 var(--kq-shadow);
+    padding: 18px 20px;
+  }
+
+  html[data-theme="quest"] .exp-card .exp-logo-slot {
+    padding: 0;
+    margin-bottom: 16px;
+    height: auto;
+    aspect-ratio: auto;
+    overflow: hidden;
+  }
+
+  html[data-theme="quest"] .exp-card::before { display: none; }
+  html[data-theme="quest"] .exp-card.featured { border-color: var(--kq-red); }
+  html[data-theme="quest"] .exp-card .exp-role,
+  html[data-theme="quest"] .proj-card .proj-title,
+  html[data-theme="quest"] .stat-cell .stat-desc,
+  html[data-theme="quest"] .proj-card .proj-desc,
+  html[data-theme="quest"] .exp-card .exp-bullets li,
+  html[data-theme="quest"] .exp-card .exp-company,
+  html[data-theme="quest"] .exp-card .exp-period,
+  html[data-theme="quest"] .proj-card .proj-tag {
+    color: var(--kq-ink);
+    text-shadow: none;
+  }
+
+  html[data-theme="quest"] .exp-card .exp-num,
+  html[data-theme="quest"] .proj-card .proj-tag,
+  html[data-theme="quest"] .exp-card .exp-company { color: var(--kq-green-deep); }
+
+  html[data-theme="quest"] .exp-bullets li::before { color: var(--kq-red); }
+
+  html[data-theme="quest"] .exp-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--kq-ink);
+    color: var(--kq-white);
+    font-family: var(--kq-font-pixel);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    padding: 6px 8px;
+  }
+
+  html[data-theme="quest"] .exp-badge::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    background: var(--kq-correct);
+    animation: kq-dot 1.6s steps(2, end) infinite;
+  }
+
+  html[data-theme="quest"] .stats-band {
+    gap: 16px;
+    padding: 28px 48px;
+    border-bottom: var(--kq-border) solid var(--kq-white);
+  }
+
+  html[data-theme="quest"] .stat-cell { border-right: none; }
+  html[data-theme="quest"] .stat-cell:hover,
+  html[data-theme="quest"] .exp-card:hover,
+  html[data-theme="quest"] .proj-card:hover { background: var(--kq-white); }
+
+  html[data-theme="quest"] .skill-tag,
+  html[data-theme="quest"] .tech-pill {
+    font-family: var(--kq-font-pixel);
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--kq-white);
+    background: var(--kq-ink);
+    border: var(--kq-border) solid var(--kq-ink);
+    box-shadow: 3px 3px 0 0 var(--kq-shadow);
+    padding: 8px 10px;
+  }
+
+  html[data-theme="quest"] .skill-tag:hover,
+  html[data-theme="quest"] .tech-pill:hover { color: var(--kq-white); border-color: var(--kq-ink); }
+
+  html[data-theme="quest"] .skill-cat-title {
+    border-bottom: var(--kq-border) solid var(--kq-ink);
+    color: var(--kq-yellow);
+  }
+
+  html[data-theme="quest"] .proj-tag::before {
+    width: 16px;
+    height: 3px;
+    background: var(--kq-green-deep);
+  }
+
+  html[data-theme="quest"] .proj-arrow { color: var(--kq-ink); }
+  html[data-theme="quest"] .proj-card:hover .proj-arrow {
+    color: var(--kq-red);
+    transform: translate(4px, -4px);
+    transition: transform 60ms steps(2, end), color 60ms steps(2, end);
+  }
+
+  html[data-theme="quest"] .carousel-track { transition: transform 120ms steps(4, end); }
+  html[data-theme="quest"] .carousel-btn {
+    opacity: 1;
+    pointer-events: auto;
+    background: var(--kq-white);
+    color: var(--kq-ink);
+    border: var(--kq-border) solid var(--kq-ink);
+    box-shadow: 3px 3px 0 0 var(--kq-shadow);
+    font-family: var(--kq-font-pixel);
+  }
+
+  html[data-theme="quest"] .carousel-btn:hover {
+    background: var(--kq-yellow);
+    border-color: var(--kq-ink);
+    color: var(--kq-ink);
+  }
+
+  html[data-theme="quest"] .carousel-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--kq-muted);
+  }
+
+  html[data-theme="quest"] .carousel-dot.active {
+    background: var(--kq-yellow);
+    transform: translate(1px, 1px);
+  }
+
+  html[data-theme="quest"] .carousel-counter,
+  html[data-theme="quest"] .expand-hint {
+    font-family: var(--kq-font-pixel);
+    font-size: 8px;
+    background: var(--kq-ink);
+    color: var(--kq-white);
+  }
+
+  html[data-theme="quest"] .marquee-wrap { background: var(--kq-yellow); padding: 14px 0; }
+  html[data-theme="quest"] .marquee-item {
+    font-size: 11px;
+    color: var(--kq-ink);
+    letter-spacing: 0.08em;
+  }
+
+  html[data-theme="quest"] .contact-heading,
+  html[data-theme="quest"] .contact-heading span { color: var(--kq-yellow); }
+  html[data-theme="quest"] .contact-bg-text {
+    font-family: var(--kq-font-pixel);
+    font-size: 34px;
+    color: var(--kq-ink);
+    bottom: 16px;
+  }
+
+  html[data-theme="quest"] .contact-link {
+    border-bottom: var(--kq-border) solid var(--kq-muted);
+    color: var(--kq-sky-pale);
+  }
+
+  html[data-theme="quest"] .contact-link:hover { color: var(--kq-yellow); }
+  html[data-theme="quest"] .contact-link:hover .contact-link-arrow {
+    transform: translate(4px, -4px);
+    transition: transform 60ms steps(2, end);
+  }
+
+  html[data-theme="quest"] .resume-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  html[data-theme="quest"] footer { background: var(--kq-ink); }
+
+  html[data-theme="quest"] #lightbox {
+    background: rgba(10, 8, 16, 0.92);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  html[data-theme="quest"] #lb-img {
+    border: var(--kq-border) solid var(--kq-ink);
+    box-shadow: 8px 8px 0 0 var(--kq-shadow);
+  }
+
+  html[data-theme="quest"] .lb-close,
+  html[data-theme="quest"] .lb-nav,
+  html[data-theme="quest"] .lb-counter {
+    background: var(--kq-white);
+    color: var(--kq-ink);
+    border: var(--kq-border) solid var(--kq-ink);
+    box-shadow: var(--kq-drop) var(--kq-drop) 0 0 var(--kq-shadow);
+    font-family: var(--kq-font-pixel);
+  }
+
+  html[data-theme="quest"] .lb-close:hover,
+  html[data-theme="quest"] .lb-nav:hover {
+    background: var(--kq-yellow);
+    color: var(--kq-ink);
+    border-color: var(--kq-ink);
+    transform: translateY(-2px);
+  }
+
+  html[data-theme="quest"] #ai-chatbot { font-family: var(--kq-font-body); }
+
+  html[data-theme="quest"] #chat-toggle {
+    width: auto;
+    height: auto;
+    padding: 14px 16px;
+    background: var(--kq-green);
+    color: var(--kq-white);
+    border: var(--kq-border) solid var(--kq-ink);
+    box-shadow: var(--kq-drop) var(--kq-drop) 0 0 var(--kq-shadow);
+    font-size: 0;
+    line-height: 0;
+  }
+
+  html[data-theme="quest"] #chat-toggle::after {
+    content: "CHAT";
+    font-family: var(--kq-font-pixel);
+    font-size: 10px;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+  }
+
+  html[data-theme="quest"] #chat-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--kq-drop) 6px 0 0 var(--kq-shadow);
+  }
+
+  html[data-theme="quest"] #chat-window {
+    background: var(--kq-white);
+    border: var(--kq-border) solid var(--kq-ink);
+    box-shadow: var(--kq-drop) var(--kq-drop) 0 0 var(--kq-shadow);
+  }
+
+  html[data-theme="quest"] #chat-header {
+    background: var(--kq-ink);
+    color: var(--kq-white);
+    font-family: var(--kq-font-pixel);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  html[data-theme="quest"] #chat-close {
+    color: var(--kq-white);
+    font-family: var(--kq-font-pixel);
+  }
+
+  html[data-theme="quest"] #chat-messages {
+    background: var(--kq-white);
+    font-family: var(--kq-font-body);
+    font-size: 22px;
+  }
+
+  html[data-theme="quest"] .user-message,
+  html[data-theme="quest"] .bot-message {
+    border: var(--kq-border) solid var(--kq-ink);
+    font-family: var(--kq-font-body);
+    font-size: 22px;
+    line-height: 1.35;
+  }
+
+  html[data-theme="quest"] .user-message {
+    background: var(--kq-green);
+    color: var(--kq-white);
+  }
+
+  html[data-theme="quest"] .bot-message {
+    background: var(--kq-white);
+    color: var(--kq-ink);
+  }
+
+  html[data-theme="quest"] #chat-input-area { border-top: var(--kq-border) solid var(--kq-ink); }
+
+  html[data-theme="quest"] #chat-input {
+    background: var(--kq-white);
+    color: var(--kq-ink);
+    font-family: var(--kq-font-body);
+    font-size: 22px;
+    border: 0;
+  }
+
+  html[data-theme="quest"] #chat-input:focus-visible {
+    outline: 3px dashed var(--kq-yellow);
+    outline-offset: -3px;
+  }
+
+  html[data-theme="quest"] #chat-send {
+    font-family: var(--kq-font-pixel);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: 0;
+    border-left: var(--kq-border) solid var(--kq-ink);
+    box-shadow: none;
+  }
+
+  @keyframes kq-streaks {
+    from { transform: translateY(0); }
+    to { transform: translateY(30px); }
+  }
+
+  @keyframes kq-drift {
+    from { transform: translateX(0); }
+    to { transform: translateX(-800px); }
+  }
+
+  @keyframes kq-cloud-drift {
+    from { transform: translateX(-200px); }
+    to { transform: translateX(110vw); }
+  }
+
+  @keyframes kq-cloud-pop {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+  @keyframes kq-puff {
+    from { opacity: 1; transform: translate(0, 0) scale(1); }
+    to { opacity: 0; transform: translate(var(--puff-x), var(--puff-y)) scale(0.4); }
+  }
+
+  @keyframes kq-name-bounce {
+    0%, 100% { transform: translateY(0); }
+    35% { transform: translateY(-8px); }
+    50% { transform: translateY(0); }
+    65% { transform: translateY(-3px); }
+    80% { transform: translateY(0); }
+  }
+
+  @keyframes kq-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html[data-theme="quest"] .hero__streaks,
+    html[data-theme="quest"] .hero__stars,
+    html[data-theme="quest"] .kq-cloud-drift,
+    html[data-theme="quest"] .exp-badge::before,
+    html[data-theme="quest"] .marquee-track,
+    html[data-theme="quest"] .scroll-line,
+    html[data-theme="quest"] .hero-fname,
+    html[data-theme="quest"] .hero-lname {
+      animation: none !important;
+    }
+
+    html[data-theme="quest"] .za-rotator {
+      transition: none !important;
+    }
+
+    html[data-theme="quest"] .kq-cloud.is-popping,
+    html[data-theme="quest"] .kq-puff {
+      animation: none !important;
+    }
+  }
+
+    @media (max-width: 900px) {
+    html[data-theme="quest"] #hero { grid-template-columns: 1fr; grid-template-rows: auto 420px; }
+    html[data-theme="quest"] .hero-right { height: 420px; overflow: hidden; }
+    html[data-theme="quest"] .hero-photo--pixel { object-position: center 22%; }
+    html[data-theme="quest"] .hero-stat-stack {
+      left: 12px;
+      right: 12px;
+      bottom: 100px;
+      flex-direction: row;
+      gap: 8px;
+    }
+    html[data-theme="quest"] .hero-stat { padding: 10px 6px; }
+    html[data-theme="quest"] .hero-stat-num { font-size: 16px; }
+    html[data-theme="quest"] .hero-stat-label { font-size: 7px; line-height: 1.5; }
+    html[data-theme="quest"] .hero-left { padding-bottom: 48px; }
+    html[data-theme="quest"] .section-heading,
+    html[data-theme="quest"] .contact-heading {
+      font-size: 34px;
+      line-height: calc(1em + 16px);
+      text-align: left;
+    }
+    html[data-theme="quest"] .hero-fname,
+    html[data-theme="quest"] .hero-lname { font-size: 30px; }
+    html[data-theme="quest"] .proj-title { font-size: 14px; }
+    html[data-theme="quest"] .about-left { border-right: none; }
+    html[data-theme="quest"] .stats-band { padding: 20px 24px; }
+    html[data-theme="quest"] .nav-links a { font-size: 8px; }
+    html[data-theme="quest"] .za-rotator {
+      max-width: calc(100vw - 210px);
+      height: auto;
+      padding: 3px 8px;
+    }
+    html[data-theme="quest"] .za-rotator-face { font-size: 15px; }
+    html[data-theme="quest"] .hero-actions {
+      width: calc(100% - 84px);
+      align-self: flex-start;
+    }
+    html[data-theme="quest"] .hero-tag { letter-spacing: 0.08em; }
   }
 </style>
 </head>
 <body>
+<div class="quest-scanlines" aria-hidden="true"></div>
 <!-- AI Chatbot Widget -->
 <div id="ai-chatbot">
 
@@ -567,7 +1882,14 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#hero" class="nav-logo">ZA</a>
+  <a href="#hero" class="nav-logo" aria-label="Zeeshan Ali">
+    <span class="nav-logo-mark">ZA</span>
+    <span class="za-rotator" aria-hidden="true">
+      <span class="za-rotator-inner">
+        <span class="za-rotator-face">Favorite Album: Carter 3</span>
+      </span>
+    </span>
+  </a>
   <ul class="nav-links">
     <li><a href="#about">[ About ]</a></li>
     <li><a href="#experience">[ Experience ]</a></li>
@@ -577,6 +1899,16 @@
     <li><a href="#contact">[ Contact ]</a></li>
   </ul>
   <div class="nav-right">
+    <button type="button" id="theme-switch" class="theme-switch" aria-pressed="false">QUEST</button>
+    <script>
+    (function () {
+      var btn = document.getElementById("theme-switch");
+      var theme = document.documentElement.getAttribute("data-theme") || "current";
+      var quest = theme === "quest";
+      btn.textContent = quest ? "CURRENT" : "QUEST";
+      btn.setAttribute("aria-pressed", quest ? "true" : "false");
+    })();
+    </script>
     <button id="nav-chat-btn" class="nav-chat-btn" type="button">💬 Chat</button>
     <a href="https://www.linkedin.com/in/zeeshan-ali-929101261/" target="_blank" class="nav-cta">LinkedIn &#8599;</a>
   </div>
@@ -584,6 +1916,13 @@
 
 <!-- HERO -->
 <section id="hero">
+  <div class="hero__bg" aria-hidden="true">
+    <div class="hero__streaks"></div>
+    <div class="hero__stars"></div>
+    <div class="hero__stars hero__stars--slow"></div>
+    <div class="hero__ground"></div>
+  </div>
+  <div class="hero__clouds"></div>
   <div class="hero-left">
     <div class="hero-tag">Computer Engineer &middot; Atlanta, GA</div>
     <div class="hero-name-block"><span class="hero-fname">ZEESHAN</span></div>
@@ -599,20 +1938,21 @@
     <div class="hero-accent-bar"></div>
     <div class="hero-grid-bg"></div>
     <div class="hero-photo-wrap">
-      <img class="hero-photo" src="IMG_0367_used (1).jpg" alt="Zeeshan Ali" onerror="this.style.display='none'" />
+      <img class="hero-photo hero-photo--live" src="IMG_0367_used (1).jpg" alt="Zeeshan Ali" onerror="this.style.display='none'" />
+      <img class="hero-photo hero-photo--pixel" src="Zeeshan_Website_Pixel.png" alt="Pixel portrait of Zeeshan Ali" />
       <div class="hero-photo-placeholder">
         <span> </span>
       </div>
-    </div>
-    <div class="hero-stat-stack">
-      <div class="hero-stat"><span class="hero-stat-num">3.8</span><span class="hero-stat-label">GPA &middot; Dean's List</span></div>
-      <div class="hero-stat"><span class="hero-stat-num">4+</span><span class="hero-stat-label">Internships</span></div>
-      <div class="hero-stat"><span class="hero-stat-num">2028</span><span class="hero-stat-label">Graduation</span></div>
     </div>
     <div class="hero-scroll-hint">
       <div class="scroll-line"></div>
       <span class="scroll-text">Scroll</span>
     </div>
+  </div>
+  <div class="hero-stat-stack">
+    <div class="hero-stat"><span class="hero-stat-num">3.8</span><span class="hero-stat-label">GPA &middot; Dean's List</span></div>
+    <div class="hero-stat"><span class="hero-stat-num">4+</span><span class="hero-stat-label">Internships</span></div>
+    <div class="hero-stat"><span class="hero-stat-num">2028</span><span class="hero-stat-label">Graduation</span></div>
   </div>
 </section>
 
@@ -647,6 +1987,7 @@
     <div class="about-info-row reveal">
   <span class="about-info-label">Education</span>
   <div style="display:flex; align-items:center; gap:12px;">
+    <img class="uga-pixel" src="G_Pixel.png" alt="" />
     <span class="about-info-value">B.S. Computer Engineering, UGA</span>
   </div>
   <span class="about-info-sub">Dean's List &middot; GPA 3.8 &middot; May 2028</span>
@@ -689,9 +2030,25 @@
 
     <div class="exp-card featured reveal">
       <div class="exp-num">01</div>
-      <span class="exp-badge">Current</span>
       <div class="exp-logo-slot">
-        <img src="ContinuServe_Logo.jpg" alt="ContinuServe" onerror="this.style.display='none'" />
+        <img class="logo-live" src="merchante-logo.png" alt="MerchantE" onerror="this.style.display='none'" />
+        <img class="logo-pixel" src="MerchantE_Pixel_New.png" alt="" />
+        <span class="exp-badge">Current</span>
+      </div>
+      <div class="exp-role">AI Solutions Developer Intern</div>
+      <div class="exp-company">MerchantE</div>
+      <div class="exp-period">September 2026 &ndash; Present</div>
+      <ul class="exp-bullets">
+        <li>Exploring and building an AI-powered Merchant Agent that can help merchants and partners navigate the portal and potentially automate common workflows</li>
+        <li>Integrating Agent Studio with Confluence and SharePoint</li>
+      </ul>
+    </div>
+
+    <div class="exp-card reveal reveal-delay-1">
+      <div class="exp-num">02</div>
+      <div class="exp-logo-slot">
+        <img class="logo-live" src="continu-logo-rect.png" alt="ContinuServe" onerror="this.style.display='none'" />
+        <img class="logo-pixel" src="Continu-pixel-rect.png" alt="" />
       </div>
       <div class="exp-role">AI Solutions Developer Intern<br/>(Core Developer / Architect Track)</div>
       <div class="exp-company">ContinuServe</div>
@@ -704,10 +2061,11 @@
       </ul>
     </div>
 
-    <div class="exp-card reveal reveal-delay-1">
-      <div class="exp-num">02</div>
+    <div class="exp-card reveal reveal-delay-2">
+      <div class="exp-num">03</div>
       <div class="exp-logo-slot">
-        <img src="make-it-loud-logo.png" alt="Make It Loud Web" onerror="this.style.display='none'" />
+        <img class="logo-live" src="mil-logo-rect.png" alt="Make It Loud Web" onerror="this.style.display='none'" />
+        <img class="logo-pixel" src="MIL_Pixel_new.png" alt="" />
       </div>
       <div class="exp-role">IT &amp; Automation Intern</div>
       <div class="exp-company">Make It Loud Web, Buford, GA</div>
@@ -720,10 +2078,11 @@
       </ul>
     </div>
 
-    <div class="exp-card reveal reveal-delay-2">
-      <div class="exp-num">03</div>
+    <div class="exp-card reveal">
+      <div class="exp-num">04</div>
       <div class="exp-logo-slot">
-        <img src="ajanta-logo.png" alt="Ajanta Electrical Industries" onerror="this.style.display='none'" />
+        <img class="logo-live" src="ajanta-logo-rect.png" alt="Ajanta Electrical Industries" onerror="this.style.display='none'" />
+        <img class="logo-pixel" src="Ajanta-pixel-rect.png" alt="" />
       </div>
       <div class="exp-role">AI Development Intern</div>
       <div class="exp-company">Ajanta Electrical Industries, India</div>
@@ -736,10 +2095,11 @@
       </ul>
     </div>
 
-    <div class="exp-card reveal reveal-delay-3">
-      <div class="exp-num">04</div>
+    <div class="exp-card reveal reveal-delay-1">
+      <div class="exp-num">05</div>
       <div class="exp-logo-slot">
-        <img src="vdart-logo1.jpg" alt="VDart Inc." onerror="this.style.display='none'" />
+        <img class="logo-live" src="vdart-logo-rect.png" alt="VDart Inc." onerror="this.style.display='none'" />
+        <img class="logo-pixel" src="VDart_Pixel_new.png" alt="" />
       </div>
       <div class="exp-role">AI Analyst Intern</div>
       <div class="exp-company">VDart Inc., Alpharetta, GA</div>
@@ -907,7 +2267,7 @@
       <p class="resume-desc">Preview my full resume below, or download a copy to keep for your records. It covers my education, internships, projects, and technical skills in detail.</p>
       <div class="resume-actions">
         <a href="resume.pdf" download class="btn-primary">Download Resume</a>
-        <a href="resume.pdf" target="_blank" class="btn-ghost">Open in New Tab</a>
+        <a href="resume.pdf" target="_blank" class="btn-ghost">Open in Tab</a>
       </div>
     </div>
     <div class="resume-preview reveal reveal-delay-3">
@@ -1106,6 +2466,259 @@
       openLightbox(srcs, active);
     });
   });
+
+  const pixelPortrait = document.querySelector('.hero-photo--pixel');
+  if (pixelPortrait) {
+    pixelPortrait.addEventListener('click', () => {
+      if (document.documentElement.getAttribute('data-theme') !== 'quest') return;
+      openLightbox([pixelPortrait.src], 0);
+    });
+  }
+
+  // THEME SWITCH + QUEST CLOUDS
+  const themeBtn = document.getElementById('theme-switch');
+  const cloudField = document.querySelector('.hero__clouds');
+  const cloudTimers = [];
+  const cloudSizes = ['sm', 'md', 'lg'];
+
+  function prefersReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  function applyThemeLabel(theme) {
+    const quest = theme === 'quest';
+    themeBtn.textContent = quest ? 'CURRENT' : 'QUEST';
+    themeBtn.setAttribute('aria-pressed', quest ? 'true' : 'false');
+  }
+
+  function clearClouds() {
+    while (cloudTimers.length) clearTimeout(cloudTimers.pop());
+    if (cloudField) cloudField.innerHTML = '';
+    document.querySelectorAll('.kq-puff').forEach(node => node.remove());
+  }
+
+  function spawnPuffs(x, y) {
+    const hero = document.getElementById('hero');
+    const rect = hero.getBoundingClientRect();
+    const count = 8;
+    for (let i = 0; i < count; i++) {
+      const puff = document.createElement('span');
+      puff.className = 'kq-puff';
+      puff.setAttribute('aria-hidden', 'true');
+      const angle = (Math.PI * 2 * i) / count;
+      const dist = 36 + Math.random() * 28;
+      puff.style.setProperty('--puff-x', Math.cos(angle) * dist + 'px');
+      puff.style.setProperty('--puff-y', Math.sin(angle) * dist + 'px');
+      puff.style.left = (x - rect.left - 6) + 'px';
+      puff.style.top = (y - rect.top - 6) + 'px';
+      hero.appendChild(puff);
+      cloudTimers.push(setTimeout(() => puff.remove(), 420));
+    }
+  }
+
+  function spawnCloud() {
+    if (document.documentElement.getAttribute('data-theme') !== 'quest' || !cloudField) return;
+    const reduce = prefersReducedMotion();
+    const drift = document.createElement('div');
+    drift.className = 'kq-cloud-drift';
+    const size = cloudSizes[Math.floor(Math.random() * cloudSizes.length)];
+    const scale = document.createElement('div');
+    scale.className = 'kq-cloud-size' + (size === 'md' ? '' : ' kq-cloud-size--' + size);
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'kq-cloud';
+    btn.setAttribute('aria-label', 'Pop cloud');
+    drift.style.top = (8 + Math.random() * 52) + '%';
+    const duration = 26 + Math.random() * 28;
+    if (reduce) {
+      drift.style.left = (8 + Math.random() * 70) + '%';
+      drift.style.animation = 'none';
+    } else {
+      drift.style.animationDuration = duration + 's';
+      drift.style.animationDelay = (-Math.random() * duration) + 's';
+    }
+    btn.addEventListener('click', event => {
+      btn.blur();
+      popCloud(drift, btn, event);
+    });
+    scale.appendChild(btn);
+    drift.appendChild(scale);
+    cloudField.appendChild(drift);
+  }
+
+  function spawnCloudField() {
+    if (!cloudField || cloudField.childElementCount > 0) return;
+    for (let i = 0; i < 4; i++) spawnCloud();
+  }
+
+  function popCloud(drift, btn, event) {
+    if (prefersReducedMotion() || btn.classList.contains('is-popping')) return;
+    btn.classList.add('is-popping');
+    btn.setAttribute('aria-pressed', 'true');
+    drift.style.animationPlayState = 'paused';
+    let x = event.clientX;
+    let y = event.clientY;
+    if (!x && !y) {
+      const rect = btn.getBoundingClientRect();
+      x = rect.left + rect.width / 2;
+      y = rect.top + rect.height / 2;
+    }
+    spawnPuffs(x, y);
+    cloudTimers.push(setTimeout(() => drift.remove(), 130));
+    cloudTimers.push(setTimeout(() => {
+      const alive = cloudField ? cloudField.querySelectorAll('.kq-cloud-drift').length : 0;
+      if (document.documentElement.getAttribute('data-theme') === 'quest' && alive < 5) spawnCloud();
+    }, 3000));
+  }
+
+  function setTheme(next) {
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    document.body.classList.remove('quest-no-scanlines');
+    applyThemeLabel(next);
+    if (next === 'quest') {
+      spawnCloudField();
+      startZaRotator();
+    } else {
+      clearClouds();
+      stopZaRotator();
+    }
+  }
+
+  const zaFacts = [
+    "Favorite Album: Carter 3",
+    "Current Binge-Watch: Breaking Bad",
+    "Favorite Video Game: Hoop Land",
+    "Top 3 Movies: Odyssey, Rockstar, Cars",
+    "Comfort Show: Gumball",
+    "Favorite Documentary: Last Dance",
+    "First Concert: Malcom Todd",
+    "Most Replayed Song: Don't Stop The Music",
+    "Favorite YouTube Channel: MrBeast",
+    "Go-To Coffee Order: Ice Coffee",
+    "Morning Routine Staple: Sleep More",
+    "Late-Night Snack: Coffee",
+    "Current Obsession: Personal Website",
+    "Guilty Pleasure: TikTok",
+    "Ideal Weekend Activity: SLEEP!",
+    "Favorite Time of Day: 2pm",
+    "Unwind Ritual: Chai and Parle-G",
+    "Signature Drink: Eggnog",
+    "Daily Habit I'm Building: Lifiting",
+    "Current Side Project: Pest Patrole",
+    "Sport / Exercise of Choice: Tennis",
+    "Favorite Board Game: Catan",
+    "Skill I'm Learning: LeetCode",
+    "Favorite Tech Tool / App: Cursor, Claude, AWS",
+    "Dream Car: 4 Wheels",
+    "Creative Outlet: Vibe Coding",
+    "Favorite Topic to Research: Electronic Waste",
+    "Favorite Way to Stay Active: Table Tennis",
+    "Niche Interest: Rubik's Cubes",
+    "Favorite City Visited: Cairo",
+    "Next Dream Destination: Palo Alto",
+    "Bucket List Trip: Guam",
+    "Best Food City: India",
+    "Go-To Local Spot: LA Fitness",
+    "Ideal Vacation Type: Camping",
+    "Favorite Travel Companion Item: Ear buds",
+    "Motto / Personal Philosophy: Those who want it, get it done",
+    "Core Value: Enjoy the moment",
+    "Superpower (Real or Imagined): Jumping over others",
+    "Best Piece of Advice Received: Focus on the current task",
+    "Personality Type: Him",
+    "Unpopular Opinion: I hate pineapple on pizza",
+    "Word of the Year: Cursored it",
+    "What Inspires Me: My parents",
+    "Biggest Pet Peeve: Complaining",
+    "Go-To Emoji: \u{1FAF5}\u{1F923}",
+    "Hidden Talent: Running",
+    "Future Goal for This Year: Summer 27 Internship"
+  ];
+  const zaFace = document.querySelector('.za-rotator-face');
+  const zaBox = document.querySelector('.za-rotator');
+  let zaOrder = [];
+  let zaCursor = 0;
+  let zaLast = '';
+  let zaTimer = null;
+  let zaTurning = false;
+
+  function shuffleZaFacts() {
+    zaOrder = zaFacts.slice();
+    for (let i = zaOrder.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const swap = zaOrder[i];
+      zaOrder[i] = zaOrder[j];
+      zaOrder[j] = swap;
+    }
+    if (zaOrder[0] === zaLast && zaOrder.length > 1) {
+      const swap = zaOrder[0];
+      zaOrder[0] = zaOrder[1];
+      zaOrder[1] = swap;
+    }
+    zaCursor = 0;
+  }
+
+  function nextZaFact() {
+    if (!zaOrder.length || zaCursor >= zaOrder.length) shuffleZaFacts();
+    zaLast = zaOrder[zaCursor++];
+    return zaLast;
+  }
+
+  function stopZaRotator() {
+    if (zaTimer) {
+      clearTimeout(zaTimer);
+      clearInterval(zaTimer);
+      zaTimer = null;
+    }
+    zaTurning = false;
+    if (zaBox) zaBox.classList.remove('is-out', 'is-in');
+  }
+
+  function startZaRotator() {
+    if (!zaFace || !zaBox || zaTimer || zaTurning) return;
+    zaFace.textContent = nextZaFact();
+    if (prefersReducedMotion()) {
+      zaTimer = setInterval(() => {
+        zaFace.textContent = nextZaFact();
+      }, 2000);
+      return;
+    }
+    function hold() {
+      zaTimer = setTimeout(turn, 2000);
+    }
+    function turn() {
+      zaTurning = true;
+      zaTimer = null;
+      zaBox.classList.add('is-out');
+      zaTimer = setTimeout(() => {
+        zaFace.textContent = nextZaFact();
+        zaBox.classList.add('is-in');
+        zaBox.classList.remove('is-out');
+        void zaBox.offsetWidth;
+        zaBox.classList.remove('is-in');
+        zaTimer = setTimeout(() => {
+          zaTurning = false;
+          zaTimer = null;
+          if (document.documentElement.getAttribute('data-theme') === 'quest') hold();
+        }, 180);
+      }, 180);
+    }
+    hold();
+  }
+
+  if (themeBtn) {
+    applyThemeLabel(document.documentElement.getAttribute('data-theme') || 'current');
+    themeBtn.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      setTheme(current === 'quest' ? 'current' : 'quest');
+    });
+  }
+
+  if (document.documentElement.getAttribute('data-theme') === 'quest') {
+    spawnCloudField();
+    startZaRotator();
+  }
 </script>
 </body>
 </html>
